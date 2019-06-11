@@ -1,10 +1,8 @@
 [proxy_all]
 
 [bypass_list]
-(^|\.)mtalk\d?\.google\.com$
-^alt\d-mtalk\.google\.com$
-^alt\d\.mobile-gtalk\.\d\.google\.com$
-^mobile-gtalk\.\d\.google\.com$
+^.*talk\..*\.google\.com$
+^.*talk\.google\.com$
 0.0.0.0/8
 10.0.0.0/8
 100.64.0.0/10
