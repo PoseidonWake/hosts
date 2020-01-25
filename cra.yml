@@ -1,6 +1,0 @@
-port: 7899
-socks-port: 9999
-allow-lan: true
-mode: Rule
-log-level: info
-external-controller: 127.0.0.1:9090
