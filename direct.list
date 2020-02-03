@@ -1,3 +1,7 @@
 IP-CIDR,108.177.97.188/32,no-resolve
+IP-CIDR,119.28.28.28/32,no-resolve
+IP-CIDR,119.29.29.29/32,no-resolve
+IP-CIDR,114.114.114.114/32,no-resolve
+IP-CIDR,223.5.5.5/32,no-resolve
 DOMAIN-SUFFIX,pool.ntp.org
 SRC-PORT,44444
