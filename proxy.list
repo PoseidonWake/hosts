@@ -1,1 +1,5 @@
 DOMAIN-SUFFIX,bintray.com
+DOMAIN-SUFFIX,jfrog.com
+DOMAIN-SUFFIX,gradle.org
+DOMAIN-SUFFIX,jitpack.io
+DOMAIN-SUFFIX,maven.org
