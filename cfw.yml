@@ -37,4 +37,4 @@ cfw-bypass:
   - 172.31.*
   - 192.168.*
   - <local>
-cfw-latency-timeout: 5000
+cfw-latency-timeout: 6000
