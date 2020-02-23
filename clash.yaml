@@ -6,7 +6,6 @@ log-level: debug
 external-controller: 127.0.0.1:9090
 dns:
   enable: true
-  listen: :0
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-filter:
