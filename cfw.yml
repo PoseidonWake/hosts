@@ -14,7 +14,7 @@ dns:
     - localhost.ptlogin2.qq.com
   nameserver:
     - 119.29.29.29
-    - 208.67.222.222:5353
+    - 208.67.222.222:443
 cfw-bypass:
   - qq.com
   - music.163.com
