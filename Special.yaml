@@ -82,6 +82,9 @@ payload:
   - DOMAIN-KEYWORD,XLLiveUD
   # URL-REGEX,(torrent|announce.php\?passkey=|tracker|BitTorrent|bt_key|ed2k|find_node|get_peers|info_hash|magnet:|peer_id=)
   # > Private Tracker
+  - DOMAIN,9.rarbg.com
+  - DOMAIN,9.rarbg.me
+  - DOMAIN,9.rarbg.to
   - DOMAIN-SUFFIX,awesome-hd.me
   - DOMAIN-SUFFIX,broadcasthe.net
   - DOMAIN-SUFFIX,chdbits.co
@@ -115,5 +118,62 @@ payload:
   - IP-CIDR,119.29.29.29/32,no-resolve
   - IP-CIDR,114.114.114.114/32,no-resolve
   - IP-CIDR,223.5.5.5/32,no-resolve
-  - DOMAIN-SUFFIX,pool.ntp.org
   - SRC-PORT,44444
+  ## > ⏰ NTP服务
+  - DOMAIN-SUFFIX,time.nist.gov
+  ## > openwrt使用的ntp服务
+  - DOMAIN-SUFFIX,0.openwrt.pool.ntp.org
+  - DOMAIN-SUFFIX,1.openwrt.pool.ntp.org
+  - DOMAIN-SUFFIX,2.openwrt.pool.ntp.org
+  - DOMAIN-SUFFIX,3.openwrt.pool.ntp.org
+  ## > 阿里云使用的ntp服务
+  - DOMAIN-SUFFIX,ntp.aliyun.com
+  - DOMAIN-SUFFIX,ntp1.aliyun.com
+  - DOMAIN-SUFFIX,ntp2.aliyun.com
+  - DOMAIN-SUFFIX,ntp3.aliyun.com
+  - DOMAIN-SUFFIX,ntp4.aliyun.com
+  - DOMAIN-SUFFIX,ntp5.aliyun.com
+  - DOMAIN-SUFFIX,ntp6.aliyun.com
+  - DOMAIN-SUFFIX,ntp7.aliyun.com
+  - DOMAIN-SUFFIX,time1.aliyun.com
+  - DOMAIN-SUFFIX,time2.aliyun.com
+  - DOMAIN-SUFFIX,time3.aliyun.com
+  - DOMAIN-SUFFIX,time4.aliyun.com
+  - DOMAIN-SUFFIX,time5.aliyun.com
+  - DOMAIN-SUFFIX,time6.aliyun.com
+  - DOMAIN-SUFFIX,time7.aliyun.com
+  - DOMAIN-SUFFIX,s1c.time.edu.cn
+  - DOMAIN-SUFFIX,s2m.time.edu.cn
+  - DOMAIN-SUFFIX,s1b.time.edu.cn
+  - DOMAIN-SUFFIX,s1e.time.edu.cn
+  - DOMAIN-SUFFIX,s2a.time.edu.cn
+  - DOMAIN-SUFFIX,s2b.time.edu.cn
+  ## > Apple使用的ntp服务
+  - DOMAIN-SUFFIX,time.apple.com
+  - DOMAIN-SUFFIX,time1.apple.com
+  - DOMAIN-SUFFIX,time2.apple.com
+  - DOMAIN-SUFFIX,time3.apple.com
+  - DOMAIN-SUFFIX,time4.apple.com
+  - DOMAIN-SUFFIX,time5.apple.com
+  - DOMAIN-SUFFIX,time6.apple.com
+  - DOMAIN-SUFFIX,time7.apple.com
+  - DOMAIN-SUFFIX,time.asia.apple.com
+  ## > 社区公用ntp服务池
+  - DOMAIN-SUFFIX,pool.ntp.org
+  - DOMAIN-SUFFIX,cn.ntp.org.cn
+  - DOMAIN-SUFFIX,edu.ntp.org.cn
+  - DOMAIN-SUFFIX,hk.ntp.org.cn
+  - DOMAIN-SUFFIX,tw.ntp.org.cn
+  - DOMAIN-SUFFIX,us.ntp.org.cn
+  - DOMAIN-SUFFIX,sgp.ntp.org.cn
+  - DOMAIN-SUFFIX,kr.ntp.org.cn
+  - DOMAIN-SUFFIX,jp.ntp.org.cn
+  - DOMAIN-SUFFIX,de.ntp.org.cn
+  - DOMAIN-SUFFIX,ina.ntp.org.cn
+  ## > Windows使用的ntp服务
+  - DOMAIN-SUFFIX,time.windows.com
+  ## 🕸️ 局域网特殊应用
+  ## > 乐播投屏
+  - DOMAIN-SUFFIX,hpplay.cn
+  ## > mDNS CIDR
+  - IP-CIDR,224.0.0.251/24,no-resolve
