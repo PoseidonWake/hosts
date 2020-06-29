@@ -7,11 +7,13 @@ external-controller: 127.0.0.1:9090
 dns:
   enable: true
   ipv6: false
-  listen: :0
+  listen: 0.0.0.0:5353
   enhanced-mode: fake-ip
+  default-nameserver:
+    - 119.29.29.29
   fake-ip-filter:
-    - '*.lan'
+    - "*.lan"
     - localhost.ptlogin2.qq.com
   nameserver:
     - 119.29.29.29
-    - 208.67.222.222:443
+    - https://doh.rixcloud.dev/dns-query
