@@ -10,6 +10,8 @@ payload:
   - DOMAIN-SUFFIX,gooqlevideo.xyz
   - DOMAIN-SUFFIX,avjoy.me
   - DOMAIN-SUFFIX,jable.tv
+  - DOMAIN-SUFFIX,static-file.com
+  - DOMAIN-SUFFIX,eyny.com
   - DOMAIN-SUFFIX,cdnlab.live
   - DOMAIN-SUFFIX,r18.com
   - DOMAIN-SUFFIX,fvs.io
