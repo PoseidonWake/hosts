@@ -2,6 +2,8 @@ payload:
   # > Facebook
   - DOMAIN-SUFFIX,akamaihd.net
   - DOMAIN-SUFFIX,cdninstagram.com
+  - DOMAIN-SUFFIX,facebook.com
+  - DOMAIN-SUFFIX,facebook.net
   - DOMAIN-SUFFIX,fb.com
   - DOMAIN-SUFFIX,fb.me
   - DOMAIN-SUFFIX,fbaddins.com
@@ -43,6 +45,7 @@ payload:
   - DOMAIN-SUFFIX,twimg.com
   - DOMAIN-SUFFIX,twimg.org
   - DOMAIN-SUFFIX,twitpic.com
+  - DOMAIN-SUFFIX,twitter.com
   - DOMAIN-SUFFIX,vine.co
   - DOMAIN-KEYWORD,twitter
   # > Reddit
