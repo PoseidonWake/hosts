@@ -1,5 +1,5 @@
 payload:
-  - doh.pub
-  - dot.pub
-  - dns.pub
-  - appinn.com
+  - 'doh.pub'
+  - 'dot.pub'
+  - 'dns.pub'
+  - 'appinn.com'
