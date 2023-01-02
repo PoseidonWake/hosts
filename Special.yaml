@@ -1,7 +1,8 @@
 payload:
-  #本地/局域网地址
+  # 本地/局域网地址
   - DOMAIN-SUFFIX,ip6-localhost
   - DOMAIN-SUFFIX,ip6-loopback
+  - DOMAIN-SUFFIX,lan
   - DOMAIN-SUFFIX,local
   - DOMAIN-SUFFIX,localhost
   - IP-CIDR,10.0.0.0/8,no-resolve
@@ -9,11 +10,15 @@ payload:
   - IP-CIDR,127.0.0.0/8,no-resolve
   - IP-CIDR,172.16.0.0/12,no-resolve
   - IP-CIDR,192.168.0.0/16,no-resolve
+  - IP-CIDR,198.18.0.0/16,no-resolve
+  - IP-CIDR,224.0.0.0/4,no-resolve
   - IP-CIDR6,::1/128,no-resolve
   - IP-CIDR6,fc00::/7,no-resolve
   - IP-CIDR6,fe80::/10,no-resolve
   - IP-CIDR6,fd00::/8,no-resolve
   # Router managed 路由器管理域名
+  - DOMAIN,instant.arubanetworks.com
+  - DOMAIN,setmeup.arubanetworks.com
   - DOMAIN,router.asus.com
   - DOMAIN-SUFFIX,hiwifi.com
   - DOMAIN-SUFFIX,leike.cc
@@ -22,45 +27,11 @@ payload:
   - DOMAIN-SUFFIX,p.to
   - DOMAIN-SUFFIX,peiluyou.com
   - DOMAIN-SUFFIX,phicomm.me
+  - DOMAIN-SUFFIX,router.ctc
   - DOMAIN-SUFFIX,routerlogin.com
   - DOMAIN-SUFFIX,tendawifi.com
   - DOMAIN-SUFFIX,zte.home
-  # > Apple CDN
-  # - PROCESS-NAME,storedownloadd
-  # - USER-AGENT,com.apple.appstored*
-  - DOMAIN,aod.itunes.apple.com
-  - DOMAIN,api.smoot.apple.cn
-  - DOMAIN,appldnld.apple.com
-  - DOMAIN,apptrailers.itunes.apple.com
-  - DOMAIN,gs-loc-cn.apple.com
-  - DOMAIN,iosapps.itunes.apple.com
-  - DOMAIN,music.apple.com
-  - DOMAIN,mvod.itunes.apple.com
-  - DOMAIN,osxapps.itunes.apple.com
-  - DOMAIN,supportdownload.apple.com
-  - DOMAIN,swcdn.apple.com
-  - DOMAIN,updates-http.cdn-apple.com
-  - DOMAIN-SUFFIX,ls.apple.com
-  - DOMAIN-SUFFIX,mzstatic.com
-  # > Google
-  - DOMAIN-KEYWORD,mtalk.google.com
-  - DOMAIN,safebrowsing.googleapis.com
-  - DOMAIN-SUFFIX,dl.google.com
-  # > Microsoft
-  - DOMAIN-SUFFIX,msftconnecttest.com
-  # > Proxy plugin
-  # - PROCESS-NAME,v2ray
-  # - PROCESS-NAME,ss-local
-  # > Steam
-  # - USER-AGENT,Steam*
-  - DOMAIN-SUFFIX,pinyuncloud.com
-  - DOMAIN-SUFFIX,steamcontent.com
-  # > UUBooster
-  # - PROCESS-NAME,UUBooster
-  # > Windows
-  - DOMAIN-SUFFIX,windows.com
-  - DOMAIN-SUFFIX,windows.net
-  - DOMAIN-SUFFIX,windowsupdate.com
+  - DOMAIN-SUFFIX,tplogin.cn
   # > Xunlei
   # USER-AGENT,%E8%BF%85%E9%9B%B7
   - DOMAIN-SUFFIX,xunlei.com
@@ -85,29 +56,6 @@ payload:
   - DOMAIN,9.rarbg.com
   - DOMAIN,9.rarbg.me
   - DOMAIN,9.rarbg.to
-  - DOMAIN-SUFFIX,awesome-hd.me
-  - DOMAIN-SUFFIX,broadcasthe.net
-  - DOMAIN-SUFFIX,chdbits.co
-  - DOMAIN-SUFFIX,classix-unlimited.co.uk
-  - DOMAIN-SUFFIX,empornium.me
-  - DOMAIN-SUFFIX,gazellegames.net
-  - DOMAIN-SUFFIX,hdchina.org
-  - DOMAIN-SUFFIX,hdsky.me
-  - DOMAIN-SUFFIX,icetorrent.org
-  - DOMAIN-SUFFIX,jpopsuki.eu
-  - DOMAIN-SUFFIX,keepfrds.com
-  - DOMAIN-SUFFIX,madsrevolution.net
-  - DOMAIN-SUFFIX,m-team.cc
-  - DOMAIN-SUFFIX,nanyangpt.com
-  - DOMAIN-SUFFIX,ncore.cc
-  - DOMAIN-SUFFIX,open.cd
-  - DOMAIN-SUFFIX,ourbits.club
-  - DOMAIN-SUFFIX,passthepopcorn.me
-  - DOMAIN-SUFFIX,privatehd.to
-  - DOMAIN-SUFFIX,redacted.ch
-  - DOMAIN-SUFFIX,springsunday.net
-  - DOMAIN-SUFFIX,tjupt.org
-  - DOMAIN-SUFFIX,totheglory.im
   - DOMAIN-KEYWORD,announce
   - DOMAIN-KEYWORD,torrent
   - DOMAIN-KEYWORD,tracker
@@ -119,59 +67,6 @@ payload:
   - IP-CIDR,114.114.114.114/32,no-resolve
   - IP-CIDR,223.5.5.5/32,no-resolve
   - SRC-PORT,44444
-  ## > ⏰ NTP服务
-  - DOMAIN-SUFFIX,time.nist.gov
-  ## > openwrt使用的ntp服务
-  - DOMAIN-SUFFIX,0.openwrt.pool.ntp.org
-  - DOMAIN-SUFFIX,1.openwrt.pool.ntp.org
-  - DOMAIN-SUFFIX,2.openwrt.pool.ntp.org
-  - DOMAIN-SUFFIX,3.openwrt.pool.ntp.org
-  ## > 阿里云使用的ntp服务
-  - DOMAIN-SUFFIX,ntp.aliyun.com
-  - DOMAIN-SUFFIX,ntp1.aliyun.com
-  - DOMAIN-SUFFIX,ntp2.aliyun.com
-  - DOMAIN-SUFFIX,ntp3.aliyun.com
-  - DOMAIN-SUFFIX,ntp4.aliyun.com
-  - DOMAIN-SUFFIX,ntp5.aliyun.com
-  - DOMAIN-SUFFIX,ntp6.aliyun.com
-  - DOMAIN-SUFFIX,ntp7.aliyun.com
-  - DOMAIN-SUFFIX,time1.aliyun.com
-  - DOMAIN-SUFFIX,time2.aliyun.com
-  - DOMAIN-SUFFIX,time3.aliyun.com
-  - DOMAIN-SUFFIX,time4.aliyun.com
-  - DOMAIN-SUFFIX,time5.aliyun.com
-  - DOMAIN-SUFFIX,time6.aliyun.com
-  - DOMAIN-SUFFIX,time7.aliyun.com
-  - DOMAIN-SUFFIX,s1c.time.edu.cn
-  - DOMAIN-SUFFIX,s2m.time.edu.cn
-  - DOMAIN-SUFFIX,s1b.time.edu.cn
-  - DOMAIN-SUFFIX,s1e.time.edu.cn
-  - DOMAIN-SUFFIX,s2a.time.edu.cn
-  - DOMAIN-SUFFIX,s2b.time.edu.cn
-  ## > Apple使用的ntp服务
-  - DOMAIN-SUFFIX,time.apple.com
-  - DOMAIN-SUFFIX,time1.apple.com
-  - DOMAIN-SUFFIX,time2.apple.com
-  - DOMAIN-SUFFIX,time3.apple.com
-  - DOMAIN-SUFFIX,time4.apple.com
-  - DOMAIN-SUFFIX,time5.apple.com
-  - DOMAIN-SUFFIX,time6.apple.com
-  - DOMAIN-SUFFIX,time7.apple.com
-  - DOMAIN-SUFFIX,time.asia.apple.com
-  ## > 社区公用ntp服务池
-  - DOMAIN-SUFFIX,pool.ntp.org
-  - DOMAIN-SUFFIX,cn.ntp.org.cn
-  - DOMAIN-SUFFIX,edu.ntp.org.cn
-  - DOMAIN-SUFFIX,hk.ntp.org.cn
-  - DOMAIN-SUFFIX,tw.ntp.org.cn
-  - DOMAIN-SUFFIX,us.ntp.org.cn
-  - DOMAIN-SUFFIX,sgp.ntp.org.cn
-  - DOMAIN-SUFFIX,kr.ntp.org.cn
-  - DOMAIN-SUFFIX,jp.ntp.org.cn
-  - DOMAIN-SUFFIX,de.ntp.org.cn
-  - DOMAIN-SUFFIX,ina.ntp.org.cn
-  ## > Windows使用的ntp服务
-  - DOMAIN-SUFFIX,time.windows.com
   ## 🕸️ 局域网特殊应用
   ## > 乐播投屏
   - DOMAIN-SUFFIX,hpplay.cn
