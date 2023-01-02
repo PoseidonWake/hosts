@@ -169,43 +169,59 @@ proxy-groups:
     proxies:
       - 🚀 Global
       - 🇸🇬 SG
+  - name: 🍎 Apple
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 Global
+    use:
+      - Trojan
+    filter: "日用|标准"
+  - name: Ⓜ️ Microsoft
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 Global
+    use:
+      - Trojan
+    filter: "日用|标准"
   - name: 🧶️ BlockedDrive
     type: select
     proxies:
       - 🚀 Global
-      - PASS
       - DIRECT
-  - name: Ⓜ️ OneDrive
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 Global
+    use:
+      - Trojan
+    filter: "日用|标准"
   - name: 🎥 Streaming
     type: select
     proxies:
       - 🚀 Global
-      - 🇭🇰 HK
-      - 🇹🇼 TW
-      - 🇺🇲 US
-      - 🇯🇵 JP
-      - 🇸🇬 SG
+    use:
+      - Trojan
+    filter: "日用|标准|特殊"
   - name: 👁‍🗨 StreamingSE
     type: select
     proxies:
       - DIRECT
       - 🇭🇰 HK
       - 🇹🇼 TW
+  - name: 🇨🇳 CN
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 Global
   - name: 🐟 Match
     type: select
     proxies:
       - 🚀 Global
       - DIRECT
 rule-providers:
-  Special:
+  Local:
     type: http
     behavior: classical
-    path: ./RuleSet/Special.yaml
-    url: https://cdn.jsdelivr.net/gh/PoseidonWake/hosts@master/Special.yaml
+    path: ./RuleSet/Local.yaml
+    url: https://cdn.jsdelivr.net/gh/PoseidonWake/hosts@master/Local.yaml
     interval: 3600
   Unbreak:
     type: http
@@ -237,11 +253,17 @@ rule-providers:
     path: ./RuleSet/GoogleDrive.yaml
     url: https://cdn.jsdelivr.net/gh/DivineEngine/Profiles@master/Clash/RuleSet/Extra/Google/GoogleDrive.yaml
     interval: 3600
-  OneDrive:
+  Microsoft:
     type: http
     behavior: classical
-    path: ./RuleSet/OneDrive.yaml
-    url: https://cdn.jsdelivr.net/gh/DivineEngine/Profiles@master/Clash/RuleSet/Extra/Microsoft/OneDrive.yaml
+    path: ./RuleSet/Microsoft.yaml
+    url: https://cdn.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Providers/Ruleset/Microsoft.yaml
+    interval: 3600
+  Apple:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Apple.yaml
+    url: https://cdn.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Providers/Ruleset/Apple.yaml
     interval: 3600
   Telegram:
     type: http
@@ -261,10 +283,10 @@ rule-providers:
     path: ./RuleSet/ChinaDomain.yaml
     url: https://cdn.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Providers/ChinaDomain.yaml
     interval: 3600
-  AV:
+  Porn:
     type: http
     behavior: classical
-    path: ./RuleSet/StreamingMedia/AV.yaml
+    path: ./RuleSet/StreamingMedia/Porn.yaml
     url: https://cdn.jsdelivr.net/gh/PoseidonWake/hosts@master/media.yaml
     interval: 3600
   DMM:
@@ -286,20 +308,21 @@ rule-providers:
     url: https://cdn.jsdelivr.net/gh/PoseidonWake/ACL4ssr@master/Clash/Providers/ChinaCompanyIp.yaml
     interval: 3600
 rules:
-  - RULE-SET,Special,DIRECT
-  - RULE-SET,Unbreak,DIRECT
+  - RULE-SET,Local,DIRECT
   - RULE-SET,ADD,DIRECT
-  - 
-  - RULE-SET,OneDrive,Ⓜ️ OneDrive
+
+  - RULE-SET,Unbreak,🇨🇳 CN
+  - RULE-SET,Apple,🍎 Apple
+  - RULE-SET,Microsoft,Ⓜ️ Microsoft 
   - RULE-SET,GoogleDrive,🧶️ BlockedDrive
   - RULE-SET,Telegram,📲 Telegram
-  - RULE-SET,AV,🎥 Streaming
+  - RULE-SET,Porn,🎥 Streaming
   - RULE-SET,DMM,🇯🇵 JP
   - RULE-SET,Streaming,🎥 Streaming
   - RULE-SET,Global,🚀 Global
   - RULE-SET,StreamingSE,👁‍🗨 StreamingSE
-  - RULE-SET,China,DIRECT
-  - RULE-SET,ChinaDomain,DIRECT
-  - RULE-SET,ChinaCompanyIp,DIRECT
-  - GEOIP,CN,DIRECT
+  - RULE-SET,China,🇨🇳 CN
+  - RULE-SET,ChinaDomain,🇨🇳 CN
+  - RULE-SET,ChinaCompanyIp,🇨🇳 CN
+  - GEOIP,CN,🇨🇳 CN
   - MATCH,🐟 Match
