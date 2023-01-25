@@ -1,0 +1,16 @@
+payload:
+  - '+.doh.pub'
+  - '+.dot.pub'
+  - '+.dns.pub'
+  - '+.appinn.com'
+  # OPPO
+  - '+.allawnos.com'
+  - '+.coloros.com'
+  - '+.heytapmobi.com'
+  - '+.heytapmobile.com'
+  - '+.heytapdl.com'
+  - '+.allawntech.com'
+  - '+.oppomobile.com'
+  - '+.allawntech.com'
+  - '+.allawntech.com'
+  - '+.allawntech.com'
