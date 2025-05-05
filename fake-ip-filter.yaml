@@ -22,6 +22,8 @@ payload:
   - "local.adguard.org"
   - "static.adtidy.org"
   - "injections.adguard.org"
+  - "ulogs.umengcloud.com"
+  - "beacons3.gvt2.com"
   - "+.+m2m"
   - "+.+_tcp"
   - "+.+bogon"
