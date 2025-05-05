@@ -17,7 +17,8 @@ payload:
   - DOMAIN,dl.google.com
   - DOMAIN,dl.l.google.com
   - DOMAIN,update.googleapis.com
-
+  - DOMAIN,local.adguard.org
+  
   - DOMAIN-SUFFIX,lan
   - DOMAIN-SUFFIX,m2m
   - DOMAIN-SUFFIX,_tcp
