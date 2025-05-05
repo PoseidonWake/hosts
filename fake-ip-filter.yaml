@@ -151,7 +151,7 @@ payload:
   # Bilibili
   - "*.mcdn.bilivideo.cn"
   # 米家
-  - "Mijia Cloud"
+ # - "Mijia Cloud"
   # Xiaomi
   - "+.market.xiaomi.com"
   # 招商银行
@@ -168,4 +168,4 @@ payload:
   - "+.orayimg.com"
   - "+.wggames.cn"
   #
-  - "WORKGROUP"
+ # - "WORKGROUP"
