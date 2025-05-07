@@ -1,0 +1,415 @@
+port: 7890
+socks-port: 7891
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: 127.0.0.1:9090
+ipv6: false
+# global-ua: clash.meta
+keep-alive-interval: 15
+keep-alive-idle: 1200
+disable-keep-alive: false
+geodata-mode: true
+geox-url:
+  geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat"
+  geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat"
+#  mmdb: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb
+geo-auto-update: true # 是否自动更新 geodata
+geo-update-interval: 24 # 更新间隔，单位：小时
+hosts:
+  local.adguard.org: 127.0.0.1
+  mtalk.google.com: 142.251.8.188
+  ulogs.umengcloud.com: 0.0.0.0
+  beacons3.gvt2.com: 0.0.0.0
+# '.dev': 127.0.0.1
+dns:
+  cache-algorithm: arc
+  enable: true
+  ipv6: false
+  prefer-h3: true
+  listen: 127.0.0.1:8853
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
+#  use-system-hosts: true
+#  use-hosts: true
+    # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
+  # 如果为false（默认值）则这三部分的dns服务器在未特别指定的情况下会直连
+  # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
+  # 仅当proxy-server-nameserver非空时可以开启此选项, 强烈不建议和prefer-h3一起使用
+  # 此外，这三者配置中的dns服务器如果出现域名会采用default-nameserver配置项解析，也请确保正确配置default-nameserver
+  respect-rules: false
+  default-nameserver:
+#    - 119.29.29.29
+    - system
+    - system://
+    - dhcp://system
+    - 114.114.114.114
+  fake-ip-filter:
+    - speedtest.cros.wr.pvp.net'
+    - "rule-set:FakeFilter"
+  proxy-server-nameserver:
+      - system
+      - system://
+      - dhcp://system
+      - 'https://doh-删除-clash.doh.pub/dns-query#skip-cert-verify=true'
+  nameserver-policy:
+    #   'www.baidu.com': '114.114.114.114'
+    #   '+.internal.crop.com': '10.0.0.1'
+  #  "geosite:geolocation-!cn":
+  #    - 'tcp://1.1.1.1#Final'
+  #    - 'tls://8.8.8.8:853#Final'      
+#      - https://dns.alidns.com/dns-quer
+#    "geosite:category-ads-all": rcode://success
+#    "www.baidu.com,+.google.cn": [223.5.5.5, https://dns.alidns.com/dns-query]
+    ## global，dns 为 rule-providers 中的名为 global 和 dns 规则订阅，
+    ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
+    "rule-set:Local,Unbreak,CNFIX,AppleCDN,AppleCN,MicrosoftCDN,ChinaDomain,China":
+      - system
+      - system://
+      - dhcp://system
+      - 'https://doh-删除-clash.doh.pub/dns-query#skip-cert-verify=true'
+    "rule-set:adblock": rcode://success
+    "geosite:category-ads-all": rcode://success
+    "geosite:cn,private":
+      - system
+      - system://
+      - dhcp://system
+      - 'https://doh-删除-clash.doh.pub/dns-query#skip-cert-verify=true'
+  #    - 119.29.29.29  
+  nameserver:
+  #  - system
+  #  - tls://223.5.5.5:853
+  #  - 'https://doh-删除-clash.doh.pub/dns-query#skip-cert-verify=true'
+  #  - 119.29.29.29
+#    - 223.5.5.5
+#    - tls://120.53.53.53
+#    - tls://1.12.12.12
+    - tls://8.8.8.8:853#Final
+    - tls://1.1.1.1:853#Final
+#  fallback:
+#    - 'tcp://1.1.1.1#Final'
+#    - 'tcp://208.67.222.222#Final'
+#    - 'tls://8.8.8.8:853#Final'
+#    - https://185.222.222.222/dns-query
+#    - quic://dns.adguard.com:784
+#  fallback-filter:
+#    geoip: true
+#    geoip-code: CN
+#    geosite:
+#      - gfw
+#    ipcidr:
+#      - 240.0.0.0/4
+#      - 0.0.0.0/32
+#      - 127.0.0.1/32
+#    domain:
+#      - '+.google.com'
+#      - '+.facebook.com'
+#      - '+.twitter.com'
+#      - '+.youtube.com'
+#      - '+.xn--ngstr-lra8j.com'
+#      - '+.googleapis.cn'
+#      - '+.googleapis.com'
+#      - '+.gvt1.com'
+proxy-providers:
+  provide1:
+    type: http
+    path: .
+    url: 
+    interval: 7200
+    health-check:
+        enable: true
+        lazy: true
+        url: http://www.gstatic.com/generate_204
+        interval: 7200
+    override:
+      additional-prefix: ""
+  provide2:
+    type: http
+    path: ./provide2.yaml
+    url: 
+    interval: 7200
+    health-check:
+        enable: true
+        lazy: true
+        url: http://www.gstatic.com/generate_204
+        interval: 7200
+    override:
+      additional-prefix: ""
+#    proxy-name:
+#      - pattern: "trojan"
+#        target: ""
+proxy-groups:
+  - name: "🚀 Global"
+    type: select
+    proxies:
+      - "🇭🇰 HK"
+      - "🇹🇼 TW"
+      - "🇺🇲 US"
+      - "🇯🇵 JP"
+      - "🇸🇬 SG"
+      - "🏳️‍🌈 NR"
+      - DIRECT
+    use:
+      - provide1
+      - provide2
+  - name: "🇭🇰 HK"
+    type: select
+    use:
+      - provide1
+      - provide2
+    filter: "港|HK|Hong"
+  - name: "🇹🇼 TW"
+    type: select
+    use:
+      - provide1
+      - provide2
+    filter: "台|新北|彰化|TW|Taiwan"
+  - name: "🇺🇲 US"
+    type: select
+    use:
+      - provide1
+      - provide2
+    filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA"
+  - name: "🇯🇵 JP"
+    type: select
+    use:
+      - provide1
+      - provide2
+    filter: "日((?!用).)+|东京|大阪|埼玉|JP|Japan"
+  - name: "🇸🇬 SG"
+    type: select
+    use:
+      - provide1
+      - provide2
+    filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
+  - name: "🏳️‍🌈 NR"
+    type: select
+    use:
+      - provide1
+      - provide2
+    exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore"
+  - name: "📲 Telegram"
+    type: select
+    proxies:
+      - 🚀 Global
+      - "🇸🇬 SG"
+  - name: "👁‍🗨 Maybe"
+    type: select
+    proxies:
+      - DIRECT
+      - "🚀 Global"
+      - "🇭🇰 HK"
+      - "🇹🇼 TW"
+    use:
+      - provide1
+      - provide2
+  - name: "🍎 Apple&MS"
+    type: select
+    proxies:
+      - DIRECT
+      - "🚀 Global"
+      - "🇭🇰 HK"
+      - "🇹🇼 TW"
+      - "🇺🇲 US"
+      - "🇯🇵 JP"
+      - "🇸🇬 SG"
+      - "🏳️‍🌈 NR"
+    use:
+      - provide1
+      - provide2
+  - name: "🎥 Streaming"
+    type: select
+    proxies:
+      - "🚀 Global"
+      - DIRECT
+      - "🇭🇰 HK"
+      - "🇹🇼 TW"
+      - "🇺🇲 US"
+      - "🇯🇵 JP"
+      - "🇸🇬 SG"
+      - "🏳️‍🌈 NR"
+    use:
+      - provide1
+      - provide2
+  - name: "🇨🇳 CN"
+    type: select
+    proxies:
+      - DIRECT
+      - "🚀 Global"
+  - name: "🚫 AD"
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+  - name: "Final"
+    type: select
+    proxies:
+      - "🚀 Global"
+      - DIRECT
+rule-providers:
+  FakeFilter:
+    type: http
+    behavior: domain
+    path: ./RuleSet/FakeipFilter.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/fake-ip-filter.yaml
+    interval: 86400
+  Local:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Local.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Local.yaml
+    interval: 86400
+  Unbreak:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Unbreak.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Unbreak.yaml
+    interval: 86400
+  StreamingSE:
+    type: http
+    behavior: classical
+    path: ./RuleSet/StreamingMedia/StreamingSE.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/StreamingSE.yaml
+    interval: 86400
+  AppleCDN:
+    type: http
+    behavior: domain
+    path: ./RuleSet/AppleCDN.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/DIRECT/no_ip/AppleCDN_no_ip.yaml
+    interval: 86400
+  AppleCN:
+    type: http
+    behavior: classical
+    path: ./RuleSet/AppleCN.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/DIRECT/no_ip/AppleCN_no_ip.yaml
+    interval: 86400
+  MicrosoftCDN:
+    type: http
+    behavior: classical
+    path: ./RuleSet/MicrosoftCDN.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/DIRECT/no_ip/MicrosoftCDN_no_ip.yaml
+    interval: 86400
+  Apple:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Apple.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Apple_no_ip.yaml
+    interval: 86400
+  Microsoft:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Microsoft.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Microsoft_no_ip.yaml
+    interval: 86400
+  CDN:
+    type: http
+    behavior: classical
+    path: ./RuleSet/CDN.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/CDN_no_ip.yaml
+    interval: 86400
+  Streaming:
+    type: http
+    behavior: classical
+    path: ./RuleSet/StreamingMedia/ProxyMedia.yaml
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ProxyMedia.yaml
+    interval: 86400
+  China:
+    type: http
+    behavior: classical
+    path: ./RuleSet/China.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/China.yaml
+    interval: 86400
+  GoogleDrive:
+    type: http
+    behavior: classical
+    path: ./RuleSet/GoogleDrive.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/GoogleDrive.yaml
+    interval: 86400
+  Download:
+    type: http
+    behavior: domain
+    path: ./RuleSet/Download_domainset.yaml
+    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Download_domainset.yaml
+    interval: 86400
+  Telegram:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Telegram.yaml
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Telegram.yaml
+    interval: 86400
+  Global:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Global.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Global.yaml
+    interval: 86400
+  ChinaDomain:
+    type: http
+    behavior: classical
+    path: ./RuleSet/ChinaDomain.yaml
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaDomain.yaml
+    interval: 86400
+  Porn:
+    type: http
+    behavior: classical
+    path: ./RuleSet/StreamingMedia/Porn.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/media.yaml
+    interval: 86400
+  DMM:
+    type: http
+    behavior: domain
+    path: ./RuleSet/StreamingMedia/DMM.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/dmmjp.yaml
+    interval: 86400
+  CNFIX:
+    type: http
+    behavior: domain
+    path: ./RuleSet/cnfix.yaml
+    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/cnfix.yaml
+    interval: 86400
+  ChinaCompanyIp:
+    type: http
+    behavior: ipcidr
+    path: ./RuleSet/ChinaCompanyIp.yaml
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/ChinaCompanyIp.yaml
+    interval: 86400
+  adblock:
+    type: http
+    behavior: domain
+    format: yaml
+    path: ./RuleSet/AWAvenue-Ads-Rule-Clash.yaml
+    url: https://gcore.jsdelivr.net/gh/TG-Twilight/AWAvenue-Ads-Rule@main/Filters/AWAvenue-Ads-Rule-Clash.yaml
+    interval: 86400
+rules:
+  - RULE-SET,Local,DIRECT
+  - GEOSITE,private,DIRECT
+  ## direct FCM
+  - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
+  - RULE-SET,CNFIX,🇨🇳 CN
+#  - DOMAIN-SUFFIX,zephiuo.top,DIRECT
+  - DOMAIN,injections.adguard.org,🚀 Global
+  - RULE-SET,Unbreak,🇨🇳 CN
+  - RULE-SET,adblock,🚫 AD
+  - GEOSITE,category-ads-all,🚫 AD
+  - RULE-SET,AppleCDN,👁‍🗨 Maybe
+  - RULE-SET,MicrosoftCDN,👁‍🗨 Maybe
+  - RULE-SET,AppleCN,👁‍🗨 Maybe
+  - RULE-SET,AppleCDN,👁‍🗨 Maybe
+  - RULE-SET,Apple,🍎 Apple&MS
+  - RULE-SET,Microsoft,🍎 Apple&MS
+  - RULE-SET,Telegram,📲 Telegram
+  - RULE-SET,Porn,🎥 Streaming
+  - RULE-SET,DMM,🇯🇵 JP
+  - RULE-SET,GoogleDrive,🎥 Streaming
+  - RULE-SET,Streaming,🎥 Streaming
+  - RULE-SET,Download,🎥 Streaming
+  - RULE-SET,Global,🚀 Global
+  - RULE-SET,StreamingSE,👁‍🗨 Maybe
+  - RULE-SET,China,🇨🇳 CN
+  - RULE-SET,ChinaDomain,🇨🇳 CN
+  - GEOSITE,geolocation-!cn,🚀 Global
+  - GEOSITE,cn,🇨🇳 CN
+  - RULE-SET,ChinaCompanyIp,🇨🇳 CN
+  - GEOIP,CN,🇨🇳 CN
+  - MATCH,Final
