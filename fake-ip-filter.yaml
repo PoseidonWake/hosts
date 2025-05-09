@@ -149,7 +149,7 @@ payload:
   - "+.stun.*.*.*.*"
   - "+.stun.*.*.*.*.*"
   # Netflix
-  - "+.nflxvideo.net"
+#  - "+.nflxvideo.net"
   # Bilibili
   - "*.mcdn.bilivideo.cn"
   # 米家
@@ -170,4 +170,4 @@ payload:
   - "+.orayimg.com"
   - "+.wggames.cn"
   #
- # - "WORKGROUP"
+  - "WORKGROUP"
