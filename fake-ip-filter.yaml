@@ -118,6 +118,24 @@ payload:
   # 咪咕音乐
   - "*.music.migu.cn"
   - "music.migu.cn"
+  # ArchLinux
+  - "+.ping.archlinux.org"
+# Apple
+  - "+.captive.apple.com"
+# Android
+  - "+.connectivitycheck.gstatic.com"
+# Cloudflare
+  - "+.cp.cloudflare.com"
+# Debian
+  - "+.network-test.debian.org"
+# Firefox
+  - "+.detectportal.firefox.com"
+# Honor
+  - connectivitycheck.platform.hihonorcloud.com
+# Huawei
+  - connectivitycheck.platform.hicloud.com
+# KDE
+  - "+.networkcheck.kde.org"
   # windows 本地连接检测
   - "+.msftconnecttest.com"
   - "+.msftncsi.com"
