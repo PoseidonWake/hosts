@@ -131,9 +131,9 @@ payload:
 # Firefox
   - "+.detectportal.firefox.com"
 # Honor
-  - connectivitycheck.platform.hihonorcloud.com
+  - 'connectivitycheck.platform.hihonorcloud.com'
 # Huawei
-  - connectivitycheck.platform.hicloud.com
+  - 'connectivitycheck.platform.hicloud.com'
 # KDE
   - "+.networkcheck.kde.org"
   # windows 本地连接检测
