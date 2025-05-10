@@ -47,6 +47,8 @@ dns:
     - 119.29.29.29
   fake-ip-filter:
     - "rule-set:FakeFilter"
+    - "geosite:private"
+    - "geosite:connectivity-check" 
     - "+.nflxvideo.net"
     - 'speedtest.cros.wr.pvp.net'
       # Netflix
@@ -112,7 +114,6 @@ dns:
 #      - '+.googleapis.com'
 #      - '+.gvt1.com'
 proxy-providers:
-
 #    proxy-name:
 #      - pattern: "trojan"
 #        target: ""
@@ -129,42 +130,42 @@ proxy-groups:
       - DIRECT
     use:
       - provider1
-      - provider1
+      - provider2
   - name: "🇭🇰 HK"
     type: select
     use:
       - provider1
-      - provider1
+      - provider2
     filter: "港|HK|Hong"
   - name: "🇹🇼 TW"
     type: select
     use:
       - provider1
-      - provider1
+      - provider2
     filter: "台|新北|彰化|TW|Taiwan"
   - name: "🇺🇲 US"
     type: select
     use:
       - provider1
-      - provider1
+      - provider2
     filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA"
   - name: "🇯🇵 JP"
     type: select
     use:
       - provider1
-      - provider1
+      - provider2
     filter: "日((?!用).)+|东京|大阪|埼玉|JP|Japan"
   - name: "🇸🇬 SG"
     type: select
     use:
       - provider1
-      - provider1
+      - provider2
     filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
   - name: "🏳️‍🌈 NR"
     type: select
     use:
       - provider1
-      - provider1
+      - provider2
     exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore"
   - name: "🌎 Google"
     type: select
@@ -198,7 +199,7 @@ proxy-groups:
       - "🏳️‍🌈 NR"
     use:
       - provider1
-      - provider1
+      - provider2
   - name: "📲 Telegram"
     type: select
     proxies:
@@ -213,7 +214,7 @@ proxy-groups:
       - "🇹🇼 TW"
     use:
       - provider1
-      - provider1
+      - provider2
   - name: "🍎 Apple&MS"
     type: select
     proxies:
@@ -227,7 +228,7 @@ proxy-groups:
       - "🏳️‍🌈 NR"
     use:
       - provider1
-      - provider1
+      - provider2
   - name: "🇨🇳 CN"
     type: select
     proxies:
@@ -277,39 +278,51 @@ rule-providers:
   AppleCDN:
     type: http
     behavior: domain
-    path: ./RuleSet/AppleCDN.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/DIRECT/no_ip/AppleCDN_no_ip.yaml
+    path: ./RuleSet/AppleCDN.txt
+    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
     interval: 86400
   AppleCN:
     type: http
     behavior: classical
-    path: ./RuleSet/AppleCN.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/DIRECT/no_ip/AppleCN_no_ip.yaml
+    path: ./RuleSet/AppleCN.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
     interval: 86400
   MicrosoftCDN:
     type: http
     behavior: classical
-    path: ./RuleSet/MicrosoftCDN.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/DIRECT/no_ip/MicrosoftCDN_no_ip.yaml
+    path: ./RuleSet/MicrosoftCDN.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
     interval: 86400
   Apple:
     type: http
     behavior: classical
-    path: ./RuleSet/Apple.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Apple_no_ip.yaml
+    path: ./RuleSet/Apple.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
     interval: 86400
   Microsoft:
     type: http
     behavior: classical
-    path: ./RuleSet/Microsoft.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Microsoft_no_ip.yaml
+    path: ./RuleSet/Microsoft.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
     interval: 86400
-#  CDN:
-#    type: http
-#    behavior: classical
-#    path: ./RuleSet/CDN.yaml
-#    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/CDN_no_ip.yaml
-#    interval: 86400
+  CDNDomain:
+    type: http
+    behavior: domain
+    path: ./RuleSet/StreamingMedia/CDN.txt
+    url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
+    interval: 86400
+  CDNNonIP:
+    type: http
+    behavior: domain
+    path: ./RuleSet/StreamingMedia/CDNNonIP.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
+    interval: 86400
+  AI:
+    type: http
+    behavior: classical
+    path: ./RuleSet/ai.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/ai.txt
+    interval: 86400
   TikTok:
     type: http
     behavior: classical
@@ -343,8 +356,8 @@ rule-providers:
   Download:
     type: http
     behavior: domain
-    path: ./RuleSet/Download_domainset.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Download_domainset.yaml
+    path: ./RuleSet/download.txt
+    url: https://ruleset.skk.moe/Clash/domainset/download.txt
     interval: 86400
   Telegram:
     type: http
@@ -405,7 +418,7 @@ rule-providers:
     behavior: domain
     format: yaml
     path: ./RuleSet/AWAvenue-Ads-Rule-Clash.yaml
-    url: https://gcore.jsdelivr.net/gh/TG-Twilight/AWAvenue-Ads-Rule@main/Filters/AWAvenue-Ads-Rule-Clash.yaml
+    url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml
     interval: 86400
   Taiwan:
     type: http
@@ -434,7 +447,10 @@ rules:
   - RULE-SET,Porn,🎥 Streaming
   - RULE-SET,DMM,🇯🇵 JP
   - RULE-SET,GoogleDrive,🎥 Streaming
+  - RULE-SET,AI,📱 TikTok
   - RULE-SET,Google,🌎 Google
+  - RULE-SET,CDNDomain,🎥 Streaming
+  - RULE-SET,CDNNonIP,🎥 Streaming
   - RULE-SET,StreamingDomain,🎥 Streaming
   - RULE-SET,Streaming,🎥 Streaming
   - RULE-SET,Download,🎥 Streaming
