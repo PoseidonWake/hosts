@@ -44,12 +44,12 @@ dns:
     - system
     - system://
     - dhcp://system
-    - 114.114.114.114
+    - 119.29.29.29
   fake-ip-filter:
-    - speedtest.cros.wr.pvp.net'
-      # Netflix
-    - "+.nflxvideo.net"
     - "rule-set:FakeFilter"
+    - "+.nflxvideo.net"
+    - 'speedtest.cros.wr.pvp.net'
+      # Netflix
   proxy-server-nameserver:
       - system
       - system://
@@ -66,7 +66,7 @@ dns:
 #    "www.baidu.com,+.google.cn": [223.5.5.5, https://dns.alidns.com/dns-query]
     ## global，dns 为 rule-providers 中的名为 global 和 dns 规则订阅，
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-    "rule-set:Local,Unbreak,FakeFilter,CNFIX,AppleCDN,AppleCN,MicrosoftCDN,China":
+    "rule-set:Local,Unbreak,FakeFilter,CNFIX,AppleCDN,AppleCN,MicrosoftCDN,Microsoft,Apple,ChinaDomain,China,StreamingSE":
       - system
       - system://
       - dhcp://system
@@ -82,7 +82,7 @@ dns:
   nameserver:
   #  - system
   #  - tls://223.5.5.5:853
-  #  - 'https:-clash.doh.pub/dns-query#skip-cert-verify=true'
+  #  - 'https://doh--clash.doh.pub/dns-query#skip-cert-verify=true'
   #  - 119.29.29.29
 #    - 223.5.5.5
 #    - tls://120.53.53.53
@@ -113,7 +113,9 @@ dns:
 #      - '+.gvt1.com'
 proxy-providers:
 
-
+#    proxy-name:
+#      - pattern: "trojan"
+#        target: ""
 proxy-groups:
   - name: "🚀 Global"
     type: select
@@ -125,35 +127,44 @@ proxy-groups:
       - "🇸🇬 SG"
       - "🏳️‍🌈 NR"
       - DIRECT
-
+    use:
+      - provider1
+      - provider1
   - name: "🇭🇰 HK"
     type: select
     use:
-
+      - provider1
+      - provider1
     filter: "港|HK|Hong"
   - name: "🇹🇼 TW"
     type: select
     use:
-
+      - provider1
+      - provider1
     filter: "台|新北|彰化|TW|Taiwan"
   - name: "🇺🇲 US"
     type: select
     use:
-
+      - provider1
+      - provider1
     filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA"
   - name: "🇯🇵 JP"
     type: select
     use:
-
+      - provider1
+      - provider1
     filter: "日((?!用).)+|东京|大阪|埼玉|JP|Japan"
   - name: "🇸🇬 SG"
     type: select
     use:
-
+      - provider1
+      - provider1
     filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
   - name: "🏳️‍🌈 NR"
     type: select
-
+    use:
+      - provider1
+      - provider1
     exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore"
   - name: "🌎 Google"
     type: select
@@ -186,7 +197,8 @@ proxy-groups:
       - "🇸🇬 SG"
       - "🏳️‍🌈 NR"
     use:
-
+      - provider1
+      - provider1
   - name: "📲 Telegram"
     type: select
     proxies:
@@ -200,7 +212,8 @@ proxy-groups:
       - "🇭🇰 HK"
       - "🇹🇼 TW"
     use:
-
+      - provider1
+      - provider1
   - name: "🍎 Apple&MS"
     type: select
     proxies:
@@ -213,7 +226,8 @@ proxy-groups:
       - "🇸🇬 SG"
       - "🏳️‍🌈 NR"
     use:
-
+      - provider1
+      - provider1
   - name: "🇨🇳 CN"
     type: select
     proxies:
@@ -229,6 +243,12 @@ proxy-groups:
     proxies:
       - "🚀 Global"
       - DIRECT
+      - "🇭🇰 HK"
+      - "🇹🇼 TW"
+      - "🇺🇲 US"
+      - "🇯🇵 JP"
+      - "🇸🇬 SG"
+      - "🏳️‍🌈 NR"
 rule-providers:
   FakeFilter:
     type: http
@@ -284,12 +304,12 @@ rule-providers:
     path: ./RuleSet/Microsoft.yaml
     url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/Microsoft_no_ip.yaml
     interval: 86400
-  CDN:
-    type: http
-    behavior: classical
-    path: ./RuleSet/CDN.yaml
-    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/CDN_no_ip.yaml
-    interval: 86400
+#  CDN:
+#    type: http
+#    behavior: classical
+#    path: ./RuleSet/CDN.yaml
+#    url: https://raw.githubusercontent.com/RealSeek/Clash_Rule_DIY/mihomo/PROXY/no_ip/CDN_no_ip.yaml
+#    interval: 86400
   TikTok:
     type: http
     behavior: classical
@@ -300,13 +320,19 @@ rule-providers:
     type: http
     behavior: classical
     path: ./RuleSet/Google.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google_No_Resolve.yaml
     interval: 86400
   Streaming:
     type: http
     behavior: classical
     path: ./RuleSet/StreamingMedia/GlobalMedia.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_No_Resolve.yaml
+    interval: 86400
+  StreamingDomain:
+    type: http
+    behavior: domain
+    path: ./RuleSet/StreamingMedia/GlobalMediaDomain.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Domain.yaml
     interval: 86400
   GoogleDrive:
     type: http
@@ -324,9 +350,9 @@ rule-providers:
     type: http
     behavior: classical
     path: ./RuleSet/Telegram.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml
     interval: 86400
- GitHub:
+  GitHub:
     type: http
     behavior: classical
     path: ./RuleSet/GitHub.yaml
@@ -336,13 +362,19 @@ rule-providers:
     type: http
     behavior: classical
     path: ./RuleSet/ProxyLite.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite_No_Resolve.yaml
     interval: 86400
   China:
     type: http
     behavior: classical
     path: ./RuleSet/China.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China_No_Resolve.yaml
+    interval: 86400
+  ChinaDomain:
+    type: http
+    behavior: domain
+    path: ./RuleSet/ChinaDomain.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China_Domain.yaml
     interval: 86400
   Porn:
     type: http
@@ -383,18 +415,14 @@ rule-providers:
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Taiwan.yaml
     interval: 86400
 rules:
-  - RULE-SET,Local,DIRECT
-  - GEOSITE,private,DIRECT
   ## direct FCM
   - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
-  - RULE-SET,CNFIX,🇨🇳 CN
 #  - DOMAIN-SUFFIX,zephiuo.top,DIRECT
   - DOMAIN,injections.adguard.org,🚀 Global
   - RULE-SET,adblock,🚫 AD
   - GEOSITE,category-ads-all,🚫 AD
+  - RULE-SET,CNFIX,🇨🇳 CN
   - RULE-SET,Unbreak,🇨🇳 CN
-  - RULE-SET,GoogleDrive,🎥 Streaming
-  - RULE-SET,Google,🌎 Google
   - RULE-SET,TikTok,📱 TikTok
   - RULE-SET,GitHub,🚀 Global
   - RULE-SET,MicrosoftCDN,👁‍🗨 Maybe
@@ -402,19 +430,25 @@ rules:
   - RULE-SET,AppleCDN,👁‍🗨 Maybe
   - RULE-SET,Apple,🍎 Apple&MS
   - RULE-SET,Microsoft,🍎 Apple&MS
-  - RULE-SET,Telegram,📲 Telegram
   - RULE-SET,Taiwan,🇹🇼 TW
   - RULE-SET,Porn,🎥 Streaming
   - RULE-SET,DMM,🇯🇵 JP
+  - RULE-SET,GoogleDrive,🎥 Streaming
+  - RULE-SET,Google,🌎 Google
+  - RULE-SET,StreamingDomain,🎥 Streaming
   - RULE-SET,Streaming,🎥 Streaming
   - RULE-SET,Download,🎥 Streaming
-  - RULE-SET,CDN,🚀 Global
+  - RULE-SET,Telegram,📲 Telegram
+#  - RULE-SET,CDN,🚀 Global
   - RULE-SET,ProxyLite,🚀 Global
   - RULE-SET,StreamingSE,👁‍🗨 Maybe
   - RULE-SET,FakeFilter,🇨🇳 CN
+  - RULE-SET,ChinaDomain,🇨🇳 CN
   - RULE-SET,China,🇨🇳 CN
   - GEOSITE,geolocation-!cn,🚀 Global
   - GEOSITE,cn,🇨🇳 CN
+  - GEOSITE,private,DIRECT
+  - RULE-SET,Local,DIRECT
   - RULE-SET,ChinaASN,🇨🇳 CN
 #  - GEOIP,CN,🇨🇳 CN
   - MATCH,Final
