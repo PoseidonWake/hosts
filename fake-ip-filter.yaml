@@ -4,6 +4,11 @@ payload:
   - '+.dns.pub'
   - "connect.rom.miui.com"
   - '+.push.apple.com'
+    # OPPO
+  - '+.heytapmobi.com'
+  - '+.heytapmobile.com'
+  - '+.heytapdl.com'
+  - '+.heytapcs.com'
   # >> Firebase Cloud Messaging
   - "mtalk.google.com"
   - "mtalk4.google.com"
