@@ -1,4 +1,5 @@
 payload:
+  - "+.mmstat.com"
   - '+.doh.pub'
   - '+.dot.pub'
   - '+.dns.pub'
