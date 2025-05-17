@@ -1,5 +1,4 @@
-port: 7890
-socks-port: 7891
+mixed-port: 7890
 allow-lan: false
 mode: Rule
 log-level: info
@@ -7,27 +6,31 @@ external-controller: 127.0.0.1:9090
 ipv6: false
 # global-ua: clash.meta
 keep-alive-interval: 15
-keep-alive-idle: 1200
+keep-alive-idle: 1800
 disable-keep-alive: false
+tcp-concurrent: true
+unified-delay: true
 geodata-mode: true
-geox-url:
-  geoip: "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"
-  geosite: "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
+#geox-url:
+#  geoip: "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"
+#  geosite: "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
 #  mmdb: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb
-geo-auto-update: true # 是否自动更新 geodata
-geo-update-interval: 24 # 更新间隔，单位：小时
+#  asn: "https://git.io/GeoLite2-ASN.mmdb"
+#geo-auto-update: true # 是否自动更新 geodata
+#geo-update-interval: 24 # 更新间隔，单位：小时
 hosts:
   local.adguard.org: 127.0.0.1
-  mtalk.google.com: 142.251.8.188
-  ulogs.umengcloud.com: 0.0.0.0
-  beacons3.gvt2.com: 0.0.0.0
+#  mtalk.google.com: 142.251.8.188
+#  ulogs.umengcloud.com: 0.0.0.0
+#  beacons3.gvt2.com: 0.0.0.0
 # '.dev': 127.0.0.1
+
 dns:
   cache-algorithm: arc
   enable: true
   ipv6: false
   prefer-h3: true
-  listen: 127.0.0.1:8853
+  listen: 127.0.0.1:1053
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter-mode: blacklist
@@ -46,9 +49,7 @@ dns:
     - dhcp://system
     - 119.29.29.29
   fake-ip-filter:
-    - "rule-set:FakeFilter"
-    - "geosite:private"
-    - "geosite:connectivity-check" 
+    - "rule-set:FakeFilter,private"
     - "+.nflxvideo.net"
     - 'speedtest.cros.wr.pvp.net'
       # Netflix
@@ -56,7 +57,7 @@ dns:
       - system
       - system://
       - dhcp://system
-      - 'https://doh--clash.doh.pub/dns-query#skip-cert-verify=true'
+      - https://223.5.5.5/dns-query
   nameserver-policy:
     #   'www.baidu.com': '114.114.114.114'
     #   '+.internal.crop.com': '10.0.0.1'
@@ -65,40 +66,33 @@ dns:
   #    - 'tls://8.8.8.8:853#Final'      
 #      - https://dns.alidns.com/dns-quer
 #    "geosite:category-ads-all": rcode://success
-#    "www.baidu.com,+.google.cn": [223.5.5.5, https://dns.alidns.com/dns-query]
+    "rule-set:googlefcm": "https://doh-.doh.pub/dns-query#skip-cert-verify=true"
     ## global，dns 为 rule-providers 中的名为 global 和 dns 规则订阅，
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-    "rule-set:Local,Unbreak,FakeFilter,CNFIX,AppleCDN,AppleCN,MicrosoftCDN,Microsoft,Apple,ChinaDomain,China,StreamingSE":
+    "rule-set:Local,Unbreak,FakeFilter,CNFIX,AppleCDN,AppleCN,MicrosoftCDN,Microsoft,Apple,ChinaDomain,ChinaNoResolve,StreamingSE,private":
       - system
       - system://
       - dhcp://system
-      - 'https://doh--clash.doh.pub/dns-query#skip-cert-verify=true'
+      - https://223.5.5.5/dns-query
     "rule-set:adblock": rcode://success
-    "geosite:category-ads-all": rcode://success
-    "geosite:cn,private":
-      - system
-      - system://
-      - dhcp://system
-      - 'https://doh--clash.doh.pub/dns-query#skip-cert-verify=true'
-  #    - 119.29.29.29  
+#    "geosite:category-ads-all": rcode://success
   nameserver:
   #  - system
   #  - tls://223.5.5.5:853
-  #  - 'https://doh--clash.doh.pub/dns-query#skip-cert-verify=true'
   #  - 119.29.29.29
 #    - 223.5.5.5
 #    - tls://120.53.53.53
 #    - tls://1.12.12.12
-    - tls://8.8.8.8:853#Final
-    - tls://1.1.1.1:853#Final
+    - tls://8.8.8.8:853#OutSide
+    - tls://1.1.1.1:853#OutSide
 ##  fallback:
 #    - 'tcp://1.1.1.1#Final'
 #    - 'tcp://208.67.222.222#Final'
 #    - 'tls://8.8.8.8:853#Final'
 #    - https://185.222.222.222/dns-query
 #    - quic://dns.adguard.com:784
-  fallback-filter:
-    geoip: false
+#  fallback-filter:
+#    geoip: false
 #    geoip-code: CN
 #    ipcidr:
 #      - 240.0.0.0/4
@@ -114,142 +108,199 @@ dns:
 #      - '+.googleapis.com'
 #      - '+.gvt1.com'
 proxy-providers:
+  provider1:
+    type: http
+    path: ./provider1.yaml
+    url: 
+    interval: 43200
+    health-check:
+        enable: true
+        lazy: true
+        url: http://cp.cloudflare.com
+        interval: 7200
+    override:
+      additional-prefix: "provider1 |"
+  provider2:
+    type: http
+    path: ./provider2.yaml
+    url: 
+    interval: 28800
+    health-check:
+        enable: true
+        lazy: true
+#        url: http://www.gstatic.com/generate_204
+        url: http://cp.cloudflare.com
+        interval: 3600
+    override:
+      additional-prefix: " |"
+#      tfo: true
 #    proxy-name:
 #      - pattern: "trojan"
 #        target: ""
 proxy-groups:
-  - name: "🚀 Global"
+  - name: "OutSide"
     type: select
     proxies:
-      - "🇭🇰 HK"
-      - "🇹🇼 TW"
-      - "🇺🇲 US"
-      - "🇯🇵 JP"
-      - "🇸🇬 SG"
-      - "🏳️‍🌈 NR"
+      - "Hong Kong"
+      - "Taiwan"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Other"
       - DIRECT
     use:
       - provider1
       - provider2
-  - name: "🇭🇰 HK"
+#    icon: OutSide
+  - name: "Hong Kong"
     type: select
     use:
-      - provider1
       - provider2
+      - provider1
     filter: "港|HK|Hong"
-  - name: "🇹🇼 TW"
+#    icon: HK
+  - name: "Taiwan"
     type: select
     use:
-      - provider1
       - provider2
+      - provider1
     filter: "台|新北|彰化|TW|Taiwan"
-  - name: "🇺🇲 US"
+#    icon: TW
+  - name: "United States"
     type: select
     use:
-      - provider1
       - provider2
+      - provider1
     filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA"
-  - name: "🇯🇵 JP"
+#    icon: US
+  - name: "Japan"
     type: select
     use:
-      - provider1
       - provider2
+      - provider1
     filter: "日((?!用).)+|东京|大阪|埼玉|JP|Japan"
-  - name: "🇸🇬 SG"
+#    icon: JP
+  - name: "Singapore"
     type: select
     use:
-      - provider1
       - provider2
+      - provider1
     filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
-  - name: "🏳️‍🌈 NR"
+#    icon: SG
+  - name: "Other"
     type: select
     use:
-      - provider1
       - provider2
+      - provider1
     exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore"
-  - name: "🌎 Google"
+#    icon: Other
+  - name: "Streaming"
     type: select
     proxies:
-      - "🚀 Global"
+      - "OutSide"
       - DIRECT
-      - "🇭🇰 HK"
-      - "🇹🇼 TW"
-      - "🇺🇲 US"
-      - "🇯🇵 JP"
-      - "🇸🇬 SG"
-      - "🏳️‍🌈 NR"
-  - name: "📱 TikTok"
+      - "Hong Kong"
+      - "Taiwan"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Other"
+    use:
+      - provider2
+      - provider1
+#    icon: Streaming
+  - name: "TikTok"
     type: select
     proxies:
-      - "🇺🇲 US"
-      - "🇯🇵 JP"
-      - "🇸🇬 SG"
-      - "🇹🇼 TW"
-      - "🏳️‍🌈 NR"
-  - name: "🎥 Streaming"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Taiwan"
+      - "Other"
+#    icon: TikTok
+  - name: "Emby"
     type: select
     proxies:
-      - "🚀 Global"
       - DIRECT
-      - "🇭🇰 HK"
-      - "🇹🇼 TW"
-      - "🇺🇲 US"
-      - "🇯🇵 JP"
-      - "🇸🇬 SG"
-      - "🏳️‍🌈 NR"
     use:
       - provider1
       - provider2
-  - name: "📲 Telegram"
+  - name: "AI"
     type: select
     proxies:
-      - "🇸🇬 SG"
-      - 🚀 Global
-  - name: "👁‍🗨 Maybe"
-    type: select
-    proxies:
-      - DIRECT
-      - "🚀 Global"
-      - "🇭🇰 HK"
-      - "🇹🇼 TW"
+      - "United States"
     use:
       - provider1
       - provider2
-  - name: "🍎 Apple&MS"
+    exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|Traffic|Expire|套餐|流量|网址"
+  - name: "Google"
+    type: select
+    proxies:
+      - "OutSide"
+      - DIRECT
+      - "Hong Kong"
+      - "Taiwan"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Other"
+#    icon: Google
+  - name: "Telegram"
+    type: select
+    proxies:
+      - "Singapore"
+      - OutSide
+#    icon: Telegram
+  - name: "Maybe"
     type: select
     proxies:
       - DIRECT
-      - "🚀 Global"
-      - "🇭🇰 HK"
-      - "🇹🇼 TW"
-      - "🇺🇲 US"
-      - "🇯🇵 JP"
-      - "🇸🇬 SG"
-      - "🏳️‍🌈 NR"
+      - "OutSide"
+      - "Hong Kong"
+      - "Taiwan"
     use:
-      - provider1
       - provider2
-  - name: "🇨🇳 CN"
+      - provider1
+#    icon: Maybe
+  - name: "Apple&MS"
     type: select
     proxies:
       - DIRECT
-      - "🚀 Global"
-  - name: "🚫 AD"
+      - "OutSide"
+      - "Hong Kong"
+      - "Taiwan"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Other"
+    use:
+      - provider2
+      - provider1
+#    icon: Apple
+  - name: "China"
+    type: select
+    proxies:
+      - DIRECT
+      - "OutSide"
+    icon: CN
+  - name: "Hijacking"
     type: select
     proxies:
       - REJECT
       - DIRECT
+#    icon: Hijacking
   - name: "Final"
     type: select
     proxies:
-      - "🚀 Global"
+      - "OutSide"
       - DIRECT
-      - "🇭🇰 HK"
-      - "🇹🇼 TW"
-      - "🇺🇲 US"
-      - "🇯🇵 JP"
-      - "🇸🇬 SG"
-      - "🏳️‍🌈 NR"
+      - "Hong Kong"
+      - "Taiwan"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Other"
+#    icon: Final
 rule-providers:
   FakeFilter:
     type: http
@@ -277,51 +328,52 @@ rule-providers:
     interval: 86400
   AppleCDN:
     type: http
+    format: text
     behavior: domain
     path: ./RuleSet/AppleCDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
     interval: 86400
   AppleCN:
     type: http
+    format: text
     behavior: classical
     path: ./RuleSet/AppleCN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
     interval: 86400
   MicrosoftCDN:
     type: http
+    format: text
     behavior: classical
     path: ./RuleSet/MicrosoftCDN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
     interval: 86400
   Apple:
     type: http
+    format: text
     behavior: classical
     path: ./RuleSet/Apple.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
     interval: 86400
   Microsoft:
     type: http
+    format: text
     behavior: classical
     path: ./RuleSet/Microsoft.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
     interval: 86400
   CDNDomain:
     type: http
+    format: text
     behavior: domain
     path: ./RuleSet/StreamingMedia/CDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
     interval: 86400
   CDNNonIP:
     type: http
+    format: text
     behavior: domain
     path: ./RuleSet/StreamingMedia/CDNNonIP.txt
     url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
-    interval: 86400
-  AI:
-    type: http
-    behavior: classical
-    path: ./RuleSet/ai.txt
-    url: https://ruleset.skk.moe/Clash/non_ip/ai.txt
     interval: 86400
   TikTok:
     type: http
@@ -355,6 +407,7 @@ rule-providers:
     interval: 86400
   Download:
     type: http
+    format: text
     behavior: domain
     path: ./RuleSet/download.txt
     url: https://ruleset.skk.moe/Clash/domainset/download.txt
@@ -377,17 +430,11 @@ rule-providers:
     path: ./RuleSet/ProxyLite.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite_No_Resolve.yaml
     interval: 86400
-  China:
+  ChinaNoResolve:
     type: http
     behavior: classical
-    path: ./RuleSet/China.yaml
+    path: ./RuleSet/ChinaNoResolve.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China_No_Resolve.yaml
-    interval: 86400
-  ChinaDomain:
-    type: http
-    behavior: domain
-    path: ./RuleSet/ChinaDomain.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China_Domain.yaml
     interval: 86400
   Porn:
     type: http
@@ -413,6 +460,34 @@ rule-providers:
     path: ./RuleSet/ChinaASN.yaml
     url: https://raw.githubusercontent.com/Kwisma/ASN-List/main/country/CN/CN_ASN.yaml
     interval: 86400
+  ChinaDomain:
+    type: http
+    format: mrs
+    behavior: domain
+    path: ./RuleSet/ChinaMax.mrs
+    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/cn.mrs
+    interval: 86400
+  private:
+    type: http
+    format: mrs
+    behavior: domain
+    path: ./RuleSet/private.mrs
+    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/private.mrs
+    interval: 86400
+  googlefcm:
+    type: http
+    format: mrs
+    behavior: domain
+    path: ./RuleSet/googlefcm.mrs
+    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/googlefcm.mrs
+    interval: 86400
+  AI:
+    type: http
+    format: mrs
+    behavior: domain
+    path: ./RuleSet/ai.mrs
+    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/category-ai-!cn.mrs
+    interval: 86400
   adblock:
     type: http
     behavior: domain
@@ -431,40 +506,41 @@ rules:
   ## direct FCM
   - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
 #  - DOMAIN-SUFFIX,zephiuo.top,DIRECT
-  - DOMAIN,injections.adguard.org,🚀 Global
-  - RULE-SET,adblock,🚫 AD
-  - GEOSITE,category-ads-all,🚫 AD
-  - RULE-SET,CNFIX,🇨🇳 CN
-  - RULE-SET,Unbreak,🇨🇳 CN
-  - RULE-SET,TikTok,📱 TikTok
-  - RULE-SET,GitHub,🚀 Global
-  - RULE-SET,MicrosoftCDN,👁‍🗨 Maybe
-  - RULE-SET,AppleCN,👁‍🗨 Maybe
-  - RULE-SET,AppleCDN,👁‍🗨 Maybe
-  - RULE-SET,Apple,🍎 Apple&MS
-  - RULE-SET,Microsoft,🍎 Apple&MS
-  - RULE-SET,Taiwan,🇹🇼 TW
-  - RULE-SET,Porn,🎥 Streaming
-  - RULE-SET,DMM,🇯🇵 JP
-  - RULE-SET,GoogleDrive,🎥 Streaming
-  - RULE-SET,AI,📱 TikTok
-  - RULE-SET,Google,🌎 Google
-  - RULE-SET,CDNDomain,🎥 Streaming
-  - RULE-SET,CDNNonIP,🎥 Streaming
-  - RULE-SET,StreamingDomain,🎥 Streaming
-  - RULE-SET,Streaming,🎥 Streaming
-  - RULE-SET,Download,🎥 Streaming
-  - RULE-SET,Telegram,📲 Telegram
-#  - RULE-SET,CDN,🚀 Global
-  - RULE-SET,ProxyLite,🚀 Global
-  - RULE-SET,StreamingSE,👁‍🗨 Maybe
-  - RULE-SET,FakeFilter,🇨🇳 CN
-  - RULE-SET,ChinaDomain,🇨🇳 CN
-  - RULE-SET,China,🇨🇳 CN
-  - GEOSITE,geolocation-!cn,🚀 Global
-  - GEOSITE,cn,🇨🇳 CN
-  - GEOSITE,private,DIRECT
+  - DOMAIN,injections.adguard.org,OutSide
+  - RULE-SET,adblock,Hijacking
+#  - GEOSITE,category-ads-all,Hijacking
+  - RULE-SET,CNFIX,China
+  - RULE-SET,Unbreak,China
+  - DOMAIN,st.stentvessel.xyz,Emby
+  - RULE-SET,AI,AI
+#  - GEOSITE,category-ai-!cn,AI
+  - RULE-SET,TikTok,TikTok
+  - RULE-SET,StreamingDomain,Streaming
+  - RULE-SET,CDNDomain,Streaming
+  - RULE-SET,Porn,Streaming
+  - RULE-SET,DMM,Japan
+  - RULE-SET,Download,Streaming
+  - RULE-SET,Streaming,Streaming
+  - RULE-SET,GoogleDrive,Streaming
+  - RULE-SET,Google,Google
+  - RULE-SET,GitHub,OutSide
+  - RULE-SET,MicrosoftCDN,Maybe
+  - RULE-SET,AppleCN,Maybe
+  - RULE-SET,AppleCDN,Maybe
+  - RULE-SET,Apple,Apple&MS
+  - RULE-SET,Microsoft,Apple&MS
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,Taiwan,Taiwan
+  - RULE-SET,CDNNonIP,Streaming
+#  - RULE-SET,CDN,OutSide
+  - RULE-SET,ProxyLite,OutSide
+  - RULE-SET,StreamingSE,Maybe
+#  - RULE-SET,FakeFilter,China
+  - RULE-SET,ChinaDomain,China
+  - RULE-SET,ChinaNoResolve,China
+#  - GEOSITE,geolocation-!cn,OutSide
+  - RULE-SET,private,DIRECT
   - RULE-SET,Local,DIRECT
-  - RULE-SET,ChinaASN,🇨🇳 CN
-#  - GEOIP,CN,🇨🇳 CN
+  - RULE-SET,ChinaASN,China
+#  - GEOIP,CN,China
   - MATCH,Final
