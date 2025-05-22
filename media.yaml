@@ -8,6 +8,8 @@ payload:
   - DOMAIN-SUFFIX,qooqlevideo.com
   - DOMAIN-SUFFIX,gooqlevideo.xyz
   - DOMAIN-SUFFIX,avjoy.me
+  - DOMAIN-SUFFIX,b-cdn.net
+  - DOMAIN-SUFFIX,tsyndicate.com
   - DOMAIN-SUFFIX,jable.tv
   - DOMAIN-SUFFIX,mushroomtrack.com
   - DOMAIN-SUFFIX,static-file.com
