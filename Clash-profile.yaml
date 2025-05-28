@@ -3,7 +3,8 @@ allow-lan: false
 mode: Rule
 log-level: info
 external-controller: 127.0.0.1:9090
-ipv6: false
+secret: ""
+ipv6: true
 # global-ua: clash.meta
 keep-alive-interval: 15
 keep-alive-idle: 1800
@@ -28,7 +29,7 @@ hosts:
 dns:
   cache-algorithm: arc
   enable: true
-  ipv6: false
+  ipv6: true
   prefer-h3: true
   listen: 127.0.0.1:1053
   enhanced-mode: fake-ip
@@ -54,27 +55,23 @@ dns:
     - 'speedtest.cros.wr.pvp.net'
       # Netflix
   proxy-server-nameserver:
-      - system
-      - system://
-      - dhcp://system
-      - https://223.5.5.5/dns-query
+    - system
+    - system://
+    - dhcp://system
   nameserver-policy:
-    #   'www.baidu.com': '114.114.114.114'
-    #   '+.internal.crop.com': '10.0.0.1'
-  #  "geosite:geolocation-!cn":
-  #    - 'tcp://1.1.1.1#Final'
-  #    - 'tls://8.8.8.8:853#Final'      
-#      - https://dns.alidns.com/dns-quer
 #    "geosite:category-ads-all": rcode://success
-    "rule-set:googlefcm": "https://doh-.doh.pub/dns-query#skip-cert-verify=true"
-    ## global，dns 为 rule-providers 中的名为 global 和 dns 规则订阅，
+#    "rule-set:googlefcm":
+#      - system
+#      - system://
+#      - https://doh--oneplus.doh.pub/dns-query
+#      - tls://8.8.8.8:853#FCM
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-    "rule-set:Local,Unbreak,FakeFilter,CNFIX,AppleCDN,AppleCN,MicrosoftCDN,Microsoft,Apple,ChinaDomain,ChinaNoResolve,StreamingSE,private":
+    "rule-set:CNFIX,AppleCDN,AppleCN,MicrosoftCDN,Microsoft,Apple,ChinaDomain,StreamingSE,private,ChinaNoResolve,FakeFilter":
       - system
       - system://
       - dhcp://system
       - https://223.5.5.5/dns-query
-    "rule-set:adblock": rcode://success
+#    "rule-set:adblock": rcode://success
 #    "geosite:category-ads-all": rcode://success
   nameserver:
   #  - system
@@ -110,7 +107,7 @@ dns:
 proxy-providers:
   provider1:
     type: http
-    path: ./provider1.yaml
+    path: ./provider1.yaml 
     url: 
     interval: 43200
     health-check:
@@ -146,6 +143,7 @@ proxy-groups:
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
       - "Other"
       - DIRECT
     use:
@@ -178,7 +176,7 @@ proxy-groups:
     use:
       - provider2
       - provider1
-    filter: "日((?!用).)+|东京|大阪|埼玉|JP|Japan"
+    filter: "((?!尼).)+日((?!用).)+|东京|大阪|埼玉|JP|Japan"
 #    icon: JP
   - name: "Singapore"
     type: select
@@ -187,12 +185,18 @@ proxy-groups:
       - provider1
     filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
 #    icon: SG
+  - name: "Europe"
+    type: select
+    use:
+      - provider2
+      - provider1
+    filter: "德|英|伦敦|加拿大|法|悉尼|俄|莫斯科|巴西|荷兰|西班牙|阿根廷|意|芬兰|比利时|丹麦|瑞|澳|乌克兰|土耳其"
   - name: "Other"
     type: select
     use:
       - provider2
       - provider1
-    exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore"
+    exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|((?!尼).)+日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore|德|英|伦敦|加拿大|法|悉尼|俄|莫斯科|巴西|荷兰|西班牙|阿根廷|意|芬兰|比利时|丹麦|瑞|澳|乌克兰|土耳其"
 #    icon: Other
   - name: "Streaming"
     type: select
@@ -204,6 +208,7 @@ proxy-groups:
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
       - "Other"
     use:
       - provider2
@@ -215,6 +220,7 @@ proxy-groups:
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
       - "Taiwan"
       - "Other"
 #    icon: TikTok
@@ -229,6 +235,7 @@ proxy-groups:
     type: select
     proxies:
       - "United States"
+      - "Europe"
     use:
       - provider1
       - provider2
@@ -243,6 +250,7 @@ proxy-groups:
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
       - "Other"
 #    icon: Google
   - name: "Telegram"
@@ -272,6 +280,7 @@ proxy-groups:
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
       - "Other"
     use:
       - provider2
@@ -283,12 +292,20 @@ proxy-groups:
       - DIRECT
       - "OutSide"
     icon: CN
-  - name: "Hijacking"
+#  - name: "Hijacking"
+#    type: select
+#    proxies:
+#      - REJECT
+#      - DIRECT
+#    icon: Hijacking
+  - name: "FCM"
     type: select
     proxies:
-      - REJECT
       - DIRECT
-#    icon: Hijacking
+      - "OutSide"
+    use:
+      - provider1
+      - provider2
   - name: "Final"
     type: select
     proxies:
@@ -299,230 +316,184 @@ proxy-groups:
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
       - "Other"
 #    icon: Final
+cy: &cy 
+  type: http
+  behavior: classical
+  interval: 86400
+  format: yaml
+ct: &ct
+  type: http
+  behavior: classical
+  interval: 86400
+  format: text
+dm: &dm
+  type: http
+  behavior: domain
+  interval: 86400
+  format: mrs
+dy: &dy
+  type: http
+  behavior: domain
+  interval: 86400
+  format: yaml
+dt: &dt
+  type: http
+  behavior: domain
+  interval: 86400
+  format: text
+im: &im
+  type: http
+  behavior: ipcidr
+  interval: 86400
+  format: mrs
 rule-providers:
   FakeFilter:
-    type: http
-    behavior: domain
+    <<: *dy
     path: ./RuleSet/FakeipFilter.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/fake-ip-filter.yaml
-    interval: 86400
-  Local:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Local.yaml
-    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Local.yaml
-    interval: 86400
-  Unbreak:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Unbreak.yaml
-    url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Unbreak.yaml
-    interval: 86400
   StreamingSE:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/StreamingMedia/StreamingSE.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/StreamingSE.yaml
-    interval: 86400
   AppleCDN:
-    type: http
-    format: text
-    behavior: domain
+    <<: *dt
     path: ./RuleSet/AppleCDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
-    interval: 86400
   AppleCN:
-    type: http
-    format: text
-    behavior: classical
+    <<: *ct
     path: ./RuleSet/AppleCN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
-    interval: 86400
   MicrosoftCDN:
-    type: http
-    format: text
-    behavior: classical
+    <<: *ct
     path: ./RuleSet/MicrosoftCDN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
-    interval: 86400
   Apple:
-    type: http
-    format: text
-    behavior: classical
+    <<: *ct
     path: ./RuleSet/Apple.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
-    interval: 86400
   Microsoft:
-    type: http
-    format: text
-    behavior: classical
+    <<: *ct
     path: ./RuleSet/Microsoft.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
-    interval: 86400
   CDNDomain:
-    type: http
-    format: text
-    behavior: domain
+    <<: *dt
     path: ./RuleSet/StreamingMedia/CDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
-    interval: 86400
   CDNNonIP:
-    type: http
+    <<: *dt
     format: text
-    behavior: domain
     path: ./RuleSet/StreamingMedia/CDNNonIP.txt
     url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
-    interval: 86400
   TikTok:
-    type: http
-    behavior: classical
-    path: ./RuleSet/StreamingMedia/TikTok.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml
-    interval: 86400
+    <<: *dm
+    path: ./RuleSet/StreamingMedia/tiktok.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/tiktok.mrs
   Google:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/Google.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google_No_Resolve.yaml
-    interval: 86400
-  Streaming:
-    type: http
-    behavior: classical
-    path: ./RuleSet/StreamingMedia/GlobalMedia.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_No_Resolve.yaml
-    interval: 86400
+  Streamingip:
+    <<: *im
+    path: ./RuleSet/StreamingMedia/mediaip.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/mediaip.mrs
   StreamingDomain:
-    type: http
-    behavior: domain
-    path: ./RuleSet/StreamingMedia/GlobalMediaDomain.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Domain.yaml
-    interval: 86400
+    <<: *dm
+    path: ./RuleSet/StreamingMedia/media.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/media.mrs
   GoogleDrive:
-    type: http
-    behavior: classical
-    path: ./RuleSet/GoogleDrive.yaml
+    <<: *cy
+    path: ./RuleSet/StreamingMedia/GoogleDrive.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleDrive/GoogleDrive.yaml
-    interval: 86400
   Download:
-    type: http
-    format: text
-    behavior: domain
-    path: ./RuleSet/download.txt
+    <<: *dt
+    path: ./RuleSet/StreamingMedia/download.txt
     url: https://ruleset.skk.moe/Clash/domainset/download.txt
-    interval: 86400
   Telegram:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/Telegram.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml
-    interval: 86400
   GitHub:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/GitHub.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml
-    interval: 86400
   ProxyLite:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/ProxyLite.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite_No_Resolve.yaml
-    interval: 86400
   ChinaNoResolve:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/ChinaNoResolve.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China_No_Resolve.yaml
-    interval: 86400
   Porn:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/StreamingMedia/Porn.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/media.yaml
-    interval: 86400
   DMM:
-    type: http
-    behavior: domain
+    <<: *dy
     path: ./RuleSet/StreamingMedia/DMM.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/dmmjp.yaml
-    interval: 86400
   CNFIX:
-    type: http
-    behavior: domain
+    <<: *dy
     path: ./RuleSet/cnfix.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/cnfix.yaml
-    interval: 86400
   ChinaASN:
-    type: http
-    behavior: classical
+    <<: *cy
     path: ./RuleSet/ChinaASN.yaml
     url: https://raw.githubusercontent.com/Kwisma/ASN-List/main/country/CN/CN_ASN.yaml
-    interval: 86400
   ChinaDomain:
-    type: http
-    format: mrs
-    behavior: domain
+    <<: *dm
     path: ./RuleSet/ChinaMax.mrs
     url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/cn.mrs
-    interval: 86400
   private:
-    type: http
-    format: mrs
-    behavior: domain
+    <<: *dm
     path: ./RuleSet/private.mrs
-    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/private.mrs
-    interval: 86400
+    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/private.mrs
+  privateip:
+    <<: *im
+    path: ./RuleSet/privateip.mrs
+    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/privateip.mrs
   googlefcm:
-    type: http
-    format: mrs
-    behavior: domain
+    <<: *dm
     path: ./RuleSet/googlefcm.mrs
     url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/googlefcm.mrs
-    interval: 86400
   AI:
-    type: http
-    format: mrs
-    behavior: domain
+    <<: *dm
     path: ./RuleSet/ai.mrs
-    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/category-ai-!cn.mrs
-    interval: 86400
-  adblock:
-    type: http
-    behavior: domain
-    format: yaml
-    path: ./RuleSet/AWAvenue-Ads-Rule-Clash.yaml
-    url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml
-    interval: 86400
+    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/ai.mrs
+#  adblock:
+#    <<: *dy
+#    path: ./RuleSet/AWAvenue-Ads-Rule-Clash.yaml
+#    url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml
   Taiwan:
-    type: http
-    behavior: classical
-    format: yaml
+    <<: *cy
     path: ./RuleSet/Taiwan.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Taiwan.yaml
-    interval: 86400
 rules:
   ## direct FCM
-  - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
+#  - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
+  - RULE-SET,googlefcm,FCM
 #  - DOMAIN-SUFFIX,zephiuo.top,DIRECT
   - DOMAIN,injections.adguard.org,OutSide
-  - RULE-SET,adblock,Hijacking
+#  - RULE-SET,adblock,Hijacking
 #  - GEOSITE,category-ads-all,Hijacking
   - RULE-SET,CNFIX,China
-  - RULE-SET,Unbreak,China
   - DOMAIN,st.stentvessel.xyz,Emby
   - RULE-SET,AI,AI
 #  - GEOSITE,category-ai-!cn,AI
+  - AND,((NETWORK,UDP),(DST-PORT,443),(RULE-SET,TikTok)),REJECT
   - RULE-SET,TikTok,TikTok
-  - RULE-SET,StreamingDomain,Streaming
-  - RULE-SET,CDNDomain,Streaming
-  - RULE-SET,Porn,Streaming
   - RULE-SET,DMM,Japan
+  - RULE-SET,Taiwan,Taiwan
+  - RULE-SET,StreamingDomain,Streaming
+  - RULE-SET,Porn,Streaming
   - RULE-SET,Download,Streaming
-  - RULE-SET,Streaming,Streaming
+  - RULE-SET,Streamingip,Streaming,no-resolve
   - RULE-SET,GoogleDrive,Streaming
   - RULE-SET,Google,Google
+  - RULE-SET,CDNDomain,Streaming
   - RULE-SET,GitHub,OutSide
   - RULE-SET,MicrosoftCDN,Maybe
   - RULE-SET,AppleCN,Maybe
@@ -530,7 +501,6 @@ rules:
   - RULE-SET,Apple,Apple&MS
   - RULE-SET,Microsoft,Apple&MS
   - RULE-SET,Telegram,Telegram
-  - RULE-SET,Taiwan,Taiwan
   - RULE-SET,CDNNonIP,Streaming
 #  - RULE-SET,CDN,OutSide
   - RULE-SET,ProxyLite,OutSide
@@ -540,7 +510,7 @@ rules:
   - RULE-SET,ChinaNoResolve,China
 #  - GEOSITE,geolocation-!cn,OutSide
   - RULE-SET,private,DIRECT
-  - RULE-SET,Local,DIRECT
+  - RULE-SET,privateip,DIRECT,no-resolve
   - RULE-SET,ChinaASN,China
 #  - GEOIP,CN,China
   - MATCH,Final
