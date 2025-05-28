@@ -4,6 +4,8 @@ mode: Rule
 log-level: info
 external-controller: 127.0.0.1:9090
 secret: ""
+# external-ui: ui                      # 可以将静态网页资源 (比如 Clash-dashboard) 运行在 Clash API, 路径为 API 地址/ui，可以为绝对路径，或者 Clash 工作目录的相对路径
+# external-ui-url: 'https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip'
 ipv6: true
 # global-ua: clash.meta
 keep-alive-interval: 15
@@ -291,7 +293,7 @@ proxy-groups:
     proxies:
       - DIRECT
       - "OutSide"
-    icon: CN
+#    icon: CN
 #  - name: "Hijacking"
 #    type: select
 #    proxies:
