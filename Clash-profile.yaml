@@ -385,8 +385,7 @@ rule-providers:
     path: ./RuleSet/StreamingMedia/CDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
   CDNNonIP:
-    <<: *dt
-    format: text
+    <<: *ct
     path: ./RuleSet/StreamingMedia/CDNNonIP.txt
     url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
   TikTok:
@@ -477,7 +476,7 @@ rules:
   ## direct FCM
 #  - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
   - RULE-SET,googlefcm,FCM
-#  - DOMAIN-SUFFIX,zephiuo.top,DIRECT
+
   - DOMAIN,injections.adguard.org,OutSide
 #  - RULE-SET,adblock,Hijacking
 #  - GEOSITE,category-ads-all,Hijacking
