@@ -480,7 +480,7 @@ rules:
 #  - RULE-SET,adblock,Hijacking
 #  - GEOSITE,category-ads-all,Hijacking
   - RULE-SET,CNFIX,China
-  - DOMAIN,st.stentvessel.xyz,Emby
+  - DOMAIN,,Emby
   - RULE-SET,AI,AI
 #  - GEOSITE,category-ai-!cn,AI
   - AND,((NETWORK,UDP),(DST-PORT,443),(RULE-SET,TikTok)),REJECT
