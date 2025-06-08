@@ -1,10 +1,10 @@
 payload:
+  - 'lens.l.google.com'
 #  - "+.mmstat.com"
   - '+.doh.pub'
   - '+.dot.pub'
   - '+.dns.pub'
   - "connect.rom.miui.com"
-  - '+.push.apple.com'
     # OPPO
   - '+.heytapmobi.com'
   - '+.heytapmobile.com'
@@ -21,6 +21,10 @@ payload:
 #  - "alt6-mtalk.google.com"
 #  - "alt7-mtalk.google.com"
 #  - "alt8-mtalk.google.com"
+  - 'proxy.golang.org'
+  - 'shark007.net'
+  - 'ff.dorado.sdo.com'
+  - 'heartbeat.belkin.com'
   # ADGuard
   - "adguardteam.github.io"
   - "adrules.top"
@@ -39,7 +43,9 @@ payload:
   - "*.turn.twilio.com"
   - "*.stun.twilio.com"
   - "stun.syncthing.net"
+  - 'stun.l.google.com'
   - "stun.*"
+  - 'na.b.g-tun.com'
   # LAN
   - "+.lan"
   - "*.localdomain"
@@ -78,6 +84,7 @@ payload:
   - "music.163.com"
   - "*.music.163.com"
   - "*.126.net"
+  - 'ps.res.netease.com'
   # 百度音乐
   - "musicapi.taihe.com"
   - "music.taihe.com"
@@ -91,14 +98,14 @@ payload:
   - "api.joox.com"
   - "joox.com"
   # QQ音乐
-  - "y.qq.com"
-  - "*.y.qq.com"
+  - "+.y.qq.com"
   - "streamoc.music.tc.qq.com"
   - "mobileoc.music.tc.qq.com"
   - "isure.stream.qqmusic.qq.com"
   - "dl.stream.qqmusic.qq.com"
   - "aqqmusic.tc.qq.com"
   - "amobile.music.tc.qq.com"
+  - 'aqqmusic.tc.qq.com'
   # 虾米音乐
   - "*.xiami.com"
   # 咪咕音乐
@@ -107,7 +114,14 @@ payload:
   # ArchLinux
   - "+.ping.archlinux.org"
 # Apple
-  - "+.captive.apple.com"
+  - '+.captive.apple.com'
+  - 'swcdn.apple.com'
+  - 'swdist.apple.com'
+  - 'swdownload.apple.com'
+  - 'swquery.apple.com'
+  - 'swscan.apple.com'
+  - '+.push.apple.com'
+  - 'mesu.apple.com'
 # Android
   - "+.connectivitycheck.gstatic.com"
 # Cloudflare
@@ -128,8 +142,9 @@ payload:
   # QQ登录
   - "localhost.ptlogin2.qq.com"
   - "localhost.sec.qq.com"
-  - "+.qq.com"
+#  - "+.qq.com"
   - "+.tencent.com"
+  - 'localhost.*.weixin.qq.com'
   # Steam
   - "+.steamcontent.com"
   # Nintendo Switch
