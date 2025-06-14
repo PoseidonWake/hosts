@@ -142,9 +142,9 @@ payload:
   # QQ登录
   - "localhost.ptlogin2.qq.com"
   - "localhost.sec.qq.com"
-#  - "+.qq.com"
   - "+.tencent.com"
   - 'localhost.*.weixin.qq.com'
+  - '+.weixin.qq.com'
   # Steam
   - "+.steamcontent.com"
   # Nintendo Switch
