@@ -39,9 +39,9 @@ profile:
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
 hosts:
   local.adguard.org: 127.0.0.1
-  "dns.alidns.com": "223.5.5.5"
-  "doh.pub": "1.12.12.12" # https://doh.pub/dns-query
-  "dot.pub": "1.12.12.12" # dot.pub:853
+#  "dns.alidns.com": "223.5.5.5"
+#  "doh.pub": "1.12.12.12" # https://doh.pub/dns-query
+#  "dot.pub": "1.12.12.12" # dot.pub:853
 #  dns.google: 8.8.8.8
 #  dns64.dns.google: [2001:4860:4860::8844]
 #  mtalk.google.com: 142.251.8.188
@@ -111,9 +111,9 @@ dns:
 #    "rule-set:googlefcm":
 #      - system
 #      - system://
-#      - https://doh-.doh.pub/dns-query
+#      - https://doh--oneplus.doh.pub/dns-query
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-    "rule-set:CNFIX,AppleCDN,AppleCN,MicrosoftCDN,Microsoft,Apple,ChinaDomain,StreamingSE,private,ChinaNoResolve,FakeFilter":
+    "rule-set:ChinaDomain,CNFIX,AppleCN,AppleCDN,Apple,MicrosoftCDN,Microsoft,StreamingSE,private,ChinaNoResolve,FakeFilter":
       - system
 #      - system://
 #      - dhcp://system
@@ -167,6 +167,7 @@ proxy-providers:
   provider2:
     type: http
     path: ./provides/provider2.yaml
+
 
     interval: 43200
     health-check:
@@ -357,19 +358,19 @@ proxy-groups:
       - provider2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Stack.png
-  - name: "Final"
-    type: select
-    proxies:
-      - "OutSide"
-      - DIRECT
-      - "Hong Kong"
-      - "Taiwan"
-      - "United States"
-      - "Japan"
-      - "Singapore"
-      - "Europe"
-      - "Other"
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png
+#  - name: "Final"
+#    type: select
+#    proxies:
+#      - "OutSide"
+#      - DIRECT
+#      - "Hong Kong"
+#      - "Taiwan"
+#      - "United States"
+#      - "Japan"
+#      - "Singapore"
+#      - "Europe"
+#      - "Other"
+#    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png
   - name: "Hijacking"
     type: select
     proxies:
@@ -416,26 +417,30 @@ rule-providers:
     <<: *cy
     path: ./RuleSet/StreamingMedia/StreamingSE.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/StreamingSE.yaml
-  AppleCDN:
-    <<: *dt
-    path: ./RuleSet/AppleCDN.txt
-    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
   AppleCN:
     <<: *ct
     path: ./RuleSet/AppleCN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
-  MicrosoftCDN:
-    <<: *ct
-    path: ./RuleSet/MicrosoftCDN.txt
-    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
   Apple:
     <<: *ct
     path: ./RuleSet/Apple.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
+  AppleCDN:
+    <<: *dt
+    path: ./RuleSet/AppleCDN.txt
+    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
+  AppleProxy:
+    <<: *cy
+    path: ./RuleSet/AppleProxy.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleProxy/AppleProxy_No_Resolve.yaml
   Microsoft:
     <<: *ct
     path: ./RuleSet/Microsoft.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
+  MicrosoftCDN:
+    <<: *ct
+    path: ./RuleSet/MicrosoftCDN.txt
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
   CDNDomain:
     <<: *dt
     path: ./RuleSet/StreamingMedia/CDN.txt
@@ -472,14 +477,14 @@ rule-providers:
     <<: *cy
     path: ./RuleSet/Telegram.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml
-  GitHub:
-    <<: *cy
-    path: ./RuleSet/GitHub.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml
-  ProxyLite:
-    <<: *cy
-    path: ./RuleSet/ProxyLite.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite_No_Resolve.yaml
+#  GitHub:
+#    <<: *cy
+#    path: ./RuleSet/GitHub.yaml
+#    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml
+#  ProxyLite:
+#    <<: *cy
+#    path: ./RuleSet/ProxyLite.yaml
+#    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite_No_Resolve.yaml
   ChinaNoResolve:
     <<: *cy
     path: ./RuleSet/ChinaNoResolve.yaml
@@ -565,15 +570,16 @@ rules:
   - RULE-SET,GoogleDrive,Streaming
   - RULE-SET,Google,Google
   - RULE-SET,CDNDomain,Streaming
-  - RULE-SET,GitHub,OutSide
-  - RULE-SET,MicrosoftCDN,Maybe
-  - RULE-SET,AppleCN,Maybe
+#  - RULE-SET,GitHub,OutSide
+  - RULE-SET,AppleProxy,United States
+  - RULE-SET,AppleCN,China
   - RULE-SET,AppleCDN,Maybe
   - RULE-SET,Apple,Apple&MS
+  - RULE-SET,MicrosoftCDN,Maybe
   - RULE-SET,Microsoft,Apple&MS
   - RULE-SET,Telegram,Telegram
   - RULE-SET,CDNNonIP,Streaming
-  - RULE-SET,ProxyLite,OutSide
+#  - RULE-SET,ProxyLite,OutSide
   - RULE-SET,StreamingSE,Maybe
 #  - RULE-SET,FakeFilter,China
   - RULE-SET,ChinaDomain,China
@@ -583,4 +589,4 @@ rules:
   - RULE-SET,privateip,DIRECT,no-resolve
   - RULE-SET,ChinaASN,China
 #  - GEOIP,CN,China
-  - MATCH,Final
+  - MATCH,OutSide
