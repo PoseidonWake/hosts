@@ -100,6 +100,7 @@ dns:
       # Netflix
   proxy-server-nameserver:
     - system
+    - 192.168.1.1:53
 #    - system://
 #    - dhcp://system
     - quic://223.5.5.5:853
@@ -115,6 +116,7 @@ dns:
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
     "rule-set:ChinaDomain,CNFIX,AppleCN,AppleCDN,Apple,MicrosoftCDN,Microsoft,StreamingSE,private,ChinaNoResolve,FakeFilter":
       - system
+      - 192.168.1.1:53
 #      - system://
 #      - dhcp://system
       - quic://223.5.5.5:853
@@ -128,28 +130,7 @@ dns:
 #    - tls://1.12.12.12
     - tls://8.8.8.8:853#OutSide
     - tls://1.1.1.1:853#OutSide
-##  fallback:
-#    - 'tcp://1.1.1.1#Final'
-#    - 'tcp://208.67.222.222#Final'
-#    - 'tls://8.8.8.8:853#Final'
-#    - https://185.222.222.222/dns-query
-#    - quic://dns.adguard.com:784
-#  fallback-filter:
-#    geoip: false
-#    geoip-code: CN
-#    ipcidr:
-#      - 240.0.0.0/4
-#      - 0.0.0.0/32
-#      - 127.0.0.1/32
-#    domain:
-#      - '+.google.com'
-#      - '+.facebook.com'
-#      - '+.twitter.com'
-#      - '+.youtube.com'
-#      - '+.xn--ngstr-lra8j.com'
-#      - '+.googleapis.cn'
-#      - '+.googleapis.com'
-#      - '+.gvt1.com'
+
 proxy-providers:
   provider1:
     type: http
@@ -508,23 +489,23 @@ rule-providers:
   ChinaDomain:
     <<: *dm
     path: ./RuleSet/cn.mrs
-    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/cn.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/cn.mrs
   private:
     <<: *dm
     path: ./RuleSet/private.mrs
-    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/private.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/private.mrs
   privateip:
     <<: *im
     path: ./RuleSet/privateip.mrs
-    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/privateip.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/privateip.mrs
   googlefcm:
     <<: *dm
     path: ./RuleSet/googlefcm.mrs
-    url: https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/googlefcm.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/googlefcm.mrs
   AI:
     <<: *dm
     path: ./RuleSet/ai.mrs
-    url: https://github.com/DustinWin/ruleset_geodata/raw/mihomo-ruleset/ai.mrs
+    url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/ai.mrs
 #  adblock:
 #    <<: *dm
 #    path: ./RuleSet/adblockmihomo.mrs
@@ -545,7 +526,7 @@ rules:
 #  - AND,((NETWORK,UDP),(DST-PORT,123)),DIRECT
   - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),FCM
   - RULE-SET,googlefcm,FCM
-
+#  - DOMAIN-SUFFIX,,DIRECT
 #  - DOMAIN,injections.adguard.org,OutSide
 #  - AND,((NETWORK,UDP),(DST-PORT,443),(RULE-SET,TikTok)),Hijacking
 # 微博
