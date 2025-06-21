@@ -37,4 +37,4 @@ host, yacd.metacubex.one
 host, yacd.haishan.me
 host, d.metacubex.one
 host, board.zash.run.place
-host-suffix,pool.ntp.org
+host-suffix, pool.ntp.org
