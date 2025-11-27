@@ -40,3 +40,5 @@ payload:
   - board.zash.run.place
   - +.pool.ntp.org
   - qtt-163cdn.com
+  - +.privacy-mgmt.com
+  - +.weather.com
