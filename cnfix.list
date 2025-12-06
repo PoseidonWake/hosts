@@ -39,3 +39,5 @@ host, d.metacubex.one
 host, board.zash.run.place
 host-suffix, pool.ntp.org
 host, qtt-163cdn.com
+host-suffix, privacy-mgmt.com
+host-suffix, weather.com
