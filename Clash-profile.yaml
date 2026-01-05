@@ -4,7 +4,7 @@ tproxy-port: 9898
 allow-lan: true
 bind-address: "*"
 mode: Rule
-log-level: warning
+log-level: error
 external-controller: 0.0.0.0:9090
 external-controller-cors:
   allow-origins:
@@ -38,7 +38,7 @@ profile:
   store-fake-ip: true
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
 hosts:
-  local.adguard.org: 127.0.0.1
+#  local.adguard.org: 127.0.0.1
 #  "dns.alidns.com": "223.5.5.5"
 #  "doh.pub": "1.12.12.12" # https://doh.pub/dns-query
 #  "dot.pub": "1.12.12.12" # dot.pub:853
@@ -49,7 +49,7 @@ hosts:
 #  beacons3.gvt2.com: 0.0.0.0
 # '.dev': 127.0.0.1
 #sniffer:
-#  enable: false
+#  enable: true
 #  sniff:
 #    HTTP:
 #      ports: [80, 8080-8880]
@@ -94,13 +94,14 @@ dns:
     - 119.29.29.29
     - 223.6.6.6
   fake-ip-filter:
-    - "rule-set:FakeFilter,private"
+    - "rule-set:FakeFilter,private,googlefcm"
     - "+.nflxvideo.net"
     - 'speedtest.cros.wr.pvp.net'
+    - '+.xoyo.games'
       # Netflix
   proxy-server-nameserver:
-    - system
-    - 192.168.1.1:53
+#    - system
+    - 192.168.1.1:53#disable-ipv6=true
 #    - system://
 #    - dhcp://system
     - quic://223.5.5.5:853
@@ -114,13 +115,16 @@ dns:
 #      - system://
 #      - https://doh--oneplus.doh.pub/dns-query
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-    "rule-set:ChinaDomain,CNFIX,AppleCN,AppleCDN,Apple,MicrosoftCDN,Microsoft,StreamingSE,private,ChinaNoResolve,FakeFilter":
-      - system
+    "rule-set:ChinaDomain,CNFIX,AppleCN,AppleCDN,Apple,MicrosoftCDN,Microsoft,StreamingSE,private,ChinaNoResolve,FakeFilter,googlefcm":
+#      - system
       - 192.168.1.1:53
 #      - system://
 #      - dhcp://system
       - quic://223.5.5.5:853
       - 119.29.29.29
+    "rule-set:Google,StreamingDomain,AI,Twitter,Instagram,Facebook,Reddit,TikTok,CDNDomain,Download,DMM,Porn,Telegram,Taiwan":
+      - tls://8.8.8.8:853#OutSide&disable-ipv6=true
+      - tls://1.1.1.1:853#OutSide&disable-ipv6=true
   nameserver:
   #  - system
   #  - tls://223.5.5.5:853
@@ -128,27 +132,25 @@ dns:
 #    - 223.5.5.5
 #    - tls://120.53.53.53
 #    - tls://1.12.12.12
-    - tls://8.8.8.8:853#OutSide
-    - tls://1.1.1.1:853#OutSide
+    - tls://8.8.8.8:853#OutSide&disable-ipv6=true
+    - tls://1.1.1.1:853#OutSide&disable-ipv6=true
+    - quic://223.5.5.5:853
 
 proxy-providers:
   provider1:
     type: http
     path: ./provides/provider1.yaml 
 
-    interval: 86400
+    interval: 43200
     health-check:
         enable: true
         lazy: true
         url: https://www.apple.com/library/test/success.html
         interval: 7200
-    override:
-      additional-prefix: "provider1 |"
-      ip-version: ipv4
+
   provider2:
     type: http
     path: ./provides/provider2.yaml
-
 
     interval: 43200
     health-check:
@@ -156,9 +158,9 @@ proxy-providers:
         lazy: true
 #        url: http://www.gstatic.com/generate_204
         url: https://www.apple.com/library/test/success.html
-        interval: 3600
+        interval: 7200
     override:
-      additional-prefix: " |"
+      additional-prefix: "÷"
       ip-version: ipv4
 #      tfo: true
 #    proxy-name:
@@ -175,64 +177,75 @@ proxy-groups:
       - "Singapore"
       - "Europe"
       - "Other"
+      - "Cheap"
       - DIRECT
     use:
       - provider1
       - provider2
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Airport.png
-  - name: "Hong Kong"
+  - name: "Cheap"
     type: select
     use:
       - provider2
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Pig.png
+  - name: "Hong Kong"
+    type: select
+    use:
       - provider1
+      - provider2
     filter: "港|HK|Hong"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
   - name: "Taiwan"
     type: select
     use:
-      - provider2
       - provider1
+      - provider2
     filter: "台|新北|彰化|TW|Taiwan"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
   - name: "United States"
     type: select
     use:
-      - provider2
       - provider1
-    filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA"
+      - provider2
+    filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|States"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
   - name: "Japan"
     type: select
     use:
-      - provider2
       - provider1
+      - provider2
     filter: "((?!尼).)+日((?!用).)+|东京|大阪|埼玉|JP|Japan"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
   - name: "Singapore"
     type: select
     use:
-      - provider2
       - provider1
+      - provider2
     filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
   - name: "Europe"
     type: select
+    proxies:
+      - PASS
     use:
-      - provider2
       - provider1
+      - provider2
     filter: "德|英|伦敦|加拿大|法|悉尼|俄|莫斯科|巴西|荷兰|西班牙|阿根廷|意|芬兰|比利时|丹麦|瑞|澳|乌克兰|土耳其"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_Kingdom.png
   - name: "Other"
     type: select
+    proxies:
+      - PASS
     use:
-      - provider2
       - provider1
+      - provider2
     exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|((?!尼).)+日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore|德|英|伦敦|加拿大|法|悉尼|俄|莫斯科|巴西|荷兰|西班牙|阿根廷|意|芬兰|比利时|丹麦|瑞|澳|乌克兰|土耳其|Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AIA.png
   - name: "Streaming"
     type: select
     proxies:
       - "OutSide"
+      - "Cheap"
       - DIRECT
       - PASS
       - "Hong Kong"
@@ -243,16 +256,31 @@ proxy-groups:
       - "Europe"
       - "Other"
     use:
-      - provider2
       - provider1
+      - provider2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Streaming.png
-  - name: "TikTok"
+  - name: "Social"
     type: select
     proxies:
+      - "OutSide"
       - "United States"
       - "Japan"
       - "Singapore"
+      - "Europe"
+      - "Hong Kong"
+      - "Taiwan"
+      - "Other"
+      - PASS
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png
+  - name: "TikTok"
+    type: select
+    proxies:
+      - "OutSide"
+      - "United States"
+      - "Japan"
+      - "Singapore"
+      - "Hong Kong"
       - "Europe"
       - "Taiwan"
       - "Other"
@@ -261,6 +289,8 @@ proxy-groups:
     type: select
     proxies:
       - DIRECT
+      - "OutSide"
+      - "Cheap"
     use:
       - provider1
       - provider2
@@ -269,7 +299,11 @@ proxy-groups:
   - name: "AI"
     type: select
     proxies:
+      - "OutSide"
       - "United States"
+      - "Hong Kong"
+      - "Japan"
+      - "Singapore"
       - "Europe"
     use:
       - provider1
@@ -293,7 +327,7 @@ proxy-groups:
     type: select
     proxies:
       - "Singapore"
-      - OutSide
+      - "OutSide"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png
   - name: "Maybe"
     type: select
@@ -303,8 +337,8 @@ proxy-groups:
       - "Hong Kong"
       - "Taiwan"
     use:
-      - provider2
       - provider1
+      - provider2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/StreamingCN.png
   - name: "Apple&MS"
@@ -312,16 +346,16 @@ proxy-groups:
     proxies:
       - DIRECT
       - "OutSide"
+      - "Cheap"
       - "Hong Kong"
       - "Taiwan"
       - "United States"
       - "Japan"
       - "Singapore"
       - "Europe"
-      - "Other"
     use:
-      - provider2
       - provider1
+      - provider2
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png
   - name: "China"
     type: select
@@ -400,27 +434,27 @@ rule-providers:
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/StreamingSE.yaml
   AppleCN:
     <<: *ct
-    path: ./RuleSet/AppleCN.txt
+    path: ./RuleSet/Filters/AppleCN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
   Apple:
     <<: *ct
-    path: ./RuleSet/Apple.txt
+    path: ./RuleSet/Filters/Apple.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
   AppleCDN:
     <<: *dt
-    path: ./RuleSet/AppleCDN.txt
+    path: ./RuleSet/Filters/AppleCDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
   AppleProxy:
     <<: *cy
-    path: ./RuleSet/AppleProxy.yaml
+    path: ./RuleSet/Filters/AppleProxy.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleProxy/AppleProxy_No_Resolve.yaml
   Microsoft:
     <<: *ct
-    path: ./RuleSet/Microsoft.txt
+    path: ./RuleSet/Filters/Microsoft.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
   MicrosoftCDN:
     <<: *ct
-    path: ./RuleSet/MicrosoftCDN.txt
+    path: ./RuleSet/Filters/MicrosoftCDN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
   CDNDomain:
     <<: *dt
@@ -436,7 +470,7 @@ rule-providers:
     url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/tiktok.mrs
   Google:
     <<: *cy
-    path: ./RuleSet/Google.yaml
+    path: ./RuleSet/Filters/Google.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google_No_Resolve.yaml
   Streamingip:
     <<: *im
@@ -456,7 +490,7 @@ rule-providers:
     url: https://ruleset.skk.moe/Clash/domainset/download.txt
   Telegram:
     <<: *cy
-    path: ./RuleSet/Telegram.yaml
+    path: ./RuleSet/Filters/Telegram.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml
 #  GitHub:
 #    <<: *cy
@@ -518,6 +552,30 @@ rule-providers:
     <<: *cy
     path: ./RuleSet/Taiwan.yaml
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Taiwan.yaml
+  Twitter:
+    <<: *dm
+    path: ./RuleSet/Filters/twitter.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs
+  Twitterip:
+    <<: *im
+    path: ./RuleSet/Filters/twitterip.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs
+  Instagram:
+    <<: *dm
+    path: ./RuleSet/Filters/instagram.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/instagram.mrs
+  Facebook:
+    <<: *dm
+    path: ./RuleSet/Filters/facebook.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs
+  Facebookip:
+    <<: *im
+    path: ./RuleSet/Filters/facebookip.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/facebook.mrs
+  Reddit:
+    <<: *dm
+    path: ./RuleSet/Filters/reddit.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/reddit.mrs
 proxies:
   - name: DNShijack
     type: dns
@@ -538,7 +596,8 @@ rules:
 #  - RULE-SET,adblock,Hijacking
   - RULE-SET,aitiAD,Hijacking
   - RULE-SET,CNFIX,China
-  - DOMAIN,,Emby
+  - DOMAIN-SUFFIX,,Emby
+  - DOMAIN-SUFFIX,,Emby
   - RULE-SET,AI,AI
 #  - GEOSITE,category-ai-!cn,AI
   - RULE-SET,TikTok,TikTok
@@ -560,6 +619,10 @@ rules:
   - RULE-SET,Microsoft,Apple&MS
   - RULE-SET,Telegram,Telegram
   - RULE-SET,CDNNonIP,Streaming
+  - RULE-SET,Twitter,Social
+  - RULE-SET,Instagram,Social
+  - RULE-SET,Facebook,Social
+  - RULE-SET,Reddit,Social
 #  - RULE-SET,ProxyLite,OutSide
   - RULE-SET,StreamingSE,Maybe
 #  - RULE-SET,FakeFilter,China
@@ -567,7 +630,10 @@ rules:
   - RULE-SET,ChinaNoResolve,China
 #  - GEOSITE,geolocation-!cn,OutSide
   - RULE-SET,private,DIRECT
+  - RULE-SET,Twitterip,Social,no-resolve
+  - RULE-SET,Facebookip,Social,no-resolve
   - RULE-SET,privateip,DIRECT,no-resolve
   - RULE-SET,ChinaASN,China
 #  - GEOIP,CN,China
   - MATCH,OutSide
+
