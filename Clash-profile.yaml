@@ -15,7 +15,7 @@ secret: ""
 external-ui: /data/adb/box/clash/dashboard
 external-ui-url: 'https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip'
 ipv6: true
-global-client-fingerprint: chrome
+# global-client-fingerprint: chrome
 global-ua: clash.meta
 keep-alive-interval: 30
 keep-alive-idle: 600
@@ -37,7 +37,7 @@ profile:
   # 储存 API 对策略组的选择，以供下次启动时使用
   store-fake-ip: true
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-hosts:
+#hosts:
 #  local.adguard.org: 127.0.0.1
 #  "dns.alidns.com": "223.5.5.5"
 #  "doh.pub": "1.12.12.12" # https://doh.pub/dns-query
@@ -115,14 +115,14 @@ dns:
 #      - system://
 #      - https://doh--oneplus.doh.pub/dns-query
     ## 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-    "rule-set:ChinaDomain,CNFIX,AppleCN,AppleCDN,Apple,MicrosoftCDN,Microsoft,StreamingSE,private,ChinaNoResolve,FakeFilter,googlefcm":
+    "rule-set:ChinaDomain,CNFIX,AppleCN,AppleCDN,Apple,MicrosoftCDN,Microsoft,StreamingSE,private,ChinaNoResolve,FakeFilter":
 #      - system
       - 192.168.1.1:53
 #      - system://
 #      - dhcp://system
       - quic://223.5.5.5:853
       - 119.29.29.29
-    "rule-set:Google,StreamingDomain,AI,Twitter,Instagram,Facebook,Reddit,TikTok,CDNDomain,Download,DMM,Porn,Telegram,Taiwan":
+    "rule-set:Google,StreamingDomain,AI,Twitter,Instagram,Facebook,Reddit,TikTok,CDNDomain,Porn,Telegram,Taiwan":
       - tls://8.8.8.8:853#OutSide&disable-ipv6=true
       - tls://1.1.1.1:853#OutSide&disable-ipv6=true
   nameserver:
@@ -137,9 +137,9 @@ dns:
     - quic://223.5.5.5:853
 
 proxy-providers:
-  provider1:
+  provide1:
     type: http
-    path: ./provides/provider1.yaml 
+    path: ./provides/provide1.yaml 
 
     interval: 43200
     health-check:
@@ -147,10 +147,11 @@ proxy-providers:
         lazy: true
         url: https://www.apple.com/library/test/success.html
         interval: 7200
-
-  provider2:
+#    override:
+#      additional-prefix: "provide1|"
+  provide2:
     type: http
-    path: ./provides/provider2.yaml
+    path: ./provides/provide2.yaml
 
     interval: 43200
     health-check:
@@ -180,47 +181,47 @@ proxy-groups:
       - "Cheap"
       - DIRECT
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Airport.png
   - name: "Cheap"
     type: select
     use:
-      - provider2
+      - provide2
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Pig.png
   - name: "Hong Kong"
     type: select
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     filter: "港|HK|Hong"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
   - name: "Taiwan"
     type: select
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     filter: "台|新北|彰化|TW|Taiwan"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
   - name: "United States"
     type: select
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     filter: "美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|States"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
   - name: "Japan"
     type: select
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     filter: "((?!尼).)+日((?!用).)+|东京|大阪|埼玉|JP|Japan"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
   - name: "Singapore"
     type: select
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     filter: "((?!最).)+新|新加坡|狮城|SG|Singapore"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
   - name: "Europe"
@@ -228,8 +229,8 @@ proxy-groups:
     proxies:
       - PASS
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     filter: "德|英|伦敦|加拿大|法|悉尼|俄|莫斯科|巴西|荷兰|西班牙|阿根廷|意|芬兰|比利时|丹麦|瑞|澳|乌克兰|土耳其"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_Kingdom.png
   - name: "Other"
@@ -237,8 +238,8 @@ proxy-groups:
     proxies:
       - PASS
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|美|洛杉矶|硅谷|达拉斯|费利蒙|凤凰城|芝加哥|圣何塞|西雅图|US|America|USA|((?!尼).)+日((?!用).)+|东京|大阪|埼玉|JP|Japan|((?!最).)+新|新加坡|狮城|SG|Singapore|德|英|伦敦|加拿大|法|悉尼|俄|莫斯科|巴西|荷兰|西班牙|阿根廷|意|芬兰|比利时|丹麦|瑞|澳|乌克兰|土耳其|Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AIA.png
   - name: "Streaming"
@@ -256,8 +257,8 @@ proxy-groups:
       - "Europe"
       - "Other"
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Streaming.png
   - name: "Social"
@@ -292,8 +293,8 @@ proxy-groups:
       - "OutSide"
       - "Cheap"
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Emby.png
   - name: "AI"
@@ -306,8 +307,8 @@ proxy-groups:
       - "Singapore"
       - "Europe"
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     exclude-filter: "港|HK|Hong|台|新北|彰化|TW|Taiwan|Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png
   - name: "Google"
@@ -337,8 +338,8 @@ proxy-groups:
       - "Hong Kong"
       - "Taiwan"
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/StreamingCN.png
   - name: "Apple&MS"
@@ -354,8 +355,8 @@ proxy-groups:
       - "Singapore"
       - "Europe"
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png
   - name: "China"
     type: select
@@ -369,8 +370,8 @@ proxy-groups:
       - DIRECT
       - "OutSide"
     use:
-      - provider1
-      - provider2
+      - provide1
+      - provide2
     exclude-filter: "Traffic|Expire|套餐|流量|网址|重置"
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Stack.png
 #  - name: "Final"
@@ -434,27 +435,27 @@ rule-providers:
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/StreamingSE.yaml
   AppleCN:
     <<: *ct
-    path: ./RuleSet/Filters/AppleCN.txt
+    path: ./RuleSet/Split/AppleCN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
   Apple:
     <<: *ct
-    path: ./RuleSet/Filters/Apple.txt
+    path: ./RuleSet/Split/Apple.txt
     url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
   AppleCDN:
     <<: *dt
-    path: ./RuleSet/Filters/AppleCDN.txt
+    path: ./RuleSet/Split/AppleCDN.txt
     url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
   AppleProxy:
     <<: *cy
-    path: ./RuleSet/Filters/AppleProxy.yaml
+    path: ./RuleSet/Split/AppleProxy.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleProxy/AppleProxy_No_Resolve.yaml
   Microsoft:
     <<: *ct
-    path: ./RuleSet/Filters/Microsoft.txt
+    path: ./RuleSet/Split/Microsoft.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
   MicrosoftCDN:
     <<: *ct
-    path: ./RuleSet/Filters/MicrosoftCDN.txt
+    path: ./RuleSet/Split/MicrosoftCDN.txt
     url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
   CDNDomain:
     <<: *dt
@@ -470,7 +471,7 @@ rule-providers:
     url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/tiktok.mrs
   Google:
     <<: *cy
-    path: ./RuleSet/Filters/Google.yaml
+    path: ./RuleSet/Split/Google.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google_No_Resolve.yaml
   Streamingip:
     <<: *im
@@ -480,17 +481,17 @@ rule-providers:
     <<: *dm
     path: ./RuleSet/StreamingMedia/media.mrs
     url: https://raw.githubusercontent.com/DustinWin/ruleset_geodata/mihomo-ruleset/media.mrs
-  GoogleDrive:
-    <<: *cy
-    path: ./RuleSet/StreamingMedia/GoogleDrive.yaml
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleDrive/GoogleDrive.yaml
+#  GoogleDrive:
+#    <<: *cy
+#    path: ./RuleSet/StreamingMedia/GoogleDrive.yaml
+#    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleDrive/GoogleDrive.yaml
   Download:
     <<: *dt
     path: ./RuleSet/StreamingMedia/download.txt
     url: https://ruleset.skk.moe/Clash/domainset/download.txt
   Telegram:
     <<: *cy
-    path: ./RuleSet/Filters/Telegram.yaml
+    path: ./RuleSet/Split/Telegram.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml
 #  GitHub:
 #    <<: *cy
@@ -554,27 +555,27 @@ rule-providers:
     url: https://raw.githubusercontent.com/PoseidonWake/hosts/master/Taiwan.yaml
   Twitter:
     <<: *dm
-    path: ./RuleSet/Filters/twitter.mrs
+    path: ./RuleSet/Split/twitter.mrs
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs
   Twitterip:
     <<: *im
-    path: ./RuleSet/Filters/twitterip.mrs
+    path: ./RuleSet/Split/twitterip.mrs
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs
   Instagram:
     <<: *dm
-    path: ./RuleSet/Filters/instagram.mrs
+    path: ./RuleSet/Split/instagram.mrs
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/instagram.mrs
   Facebook:
     <<: *dm
-    path: ./RuleSet/Filters/facebook.mrs
+    path: ./RuleSet/Split/facebook.mrs
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs
   Facebookip:
     <<: *im
-    path: ./RuleSet/Filters/facebookip.mrs
+    path: ./RuleSet/Split/facebookip.mrs
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/facebook.mrs
   Reddit:
     <<: *dm
-    path: ./RuleSet/Filters/reddit.mrs
+    path: ./RuleSet/Split/reddit.mrs
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/reddit.mrs
 proxies:
   - name: DNShijack
@@ -596,33 +597,31 @@ rules:
 #  - RULE-SET,adblock,Hijacking
   - RULE-SET,aitiAD,Hijacking
   - RULE-SET,CNFIX,China
-  - DOMAIN-SUFFIX,,Emby
-  - DOMAIN-SUFFIX,,Emby
   - RULE-SET,AI,AI
 #  - GEOSITE,category-ai-!cn,AI
-  - RULE-SET,TikTok,TikTok
   - RULE-SET,DMM,Japan
-  - RULE-SET,Taiwan,Taiwan
-  - RULE-SET,StreamingDomain,Streaming
-  - RULE-SET,Porn,Streaming
-  - RULE-SET,Download,Streaming
-  - RULE-SET,Streamingip,Streaming,no-resolve
-  - RULE-SET,GoogleDrive,Streaming
-  - RULE-SET,Google,Google
+#  - RULE-SET,GoogleDrive,Streaming
   - RULE-SET,CDNDomain,Streaming
-#  - RULE-SET,GitHub,OutSide
-  - RULE-SET,AppleProxy,United States
-  - RULE-SET,AppleCN,China
-  - RULE-SET,AppleCDN,Maybe
-  - RULE-SET,Apple,Apple&MS
-  - RULE-SET,MicrosoftCDN,Maybe
-  - RULE-SET,Microsoft,Apple&MS
-  - RULE-SET,Telegram,Telegram
+  - RULE-SET,StreamingDomain,Streaming
   - RULE-SET,CDNNonIP,Streaming
+#  - RULE-SET,GitHub,OutSide
+  - RULE-SET,Google,Google
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,TikTok,TikTok
   - RULE-SET,Twitter,Social
   - RULE-SET,Instagram,Social
   - RULE-SET,Facebook,Social
   - RULE-SET,Reddit,Social
+  - RULE-SET,AppleProxy,United States
+  - RULE-SET,MicrosoftCDN,Maybe
+  - RULE-SET,AppleCDN,Maybe
+  - RULE-SET,Download,Streaming
+  - RULE-SET,AppleCN,China
+  - RULE-SET,Apple,Apple&MS
+  - RULE-SET,Microsoft,Apple&MS
+  - RULE-SET,Taiwan,Taiwan
+  - DOMAIN-SUFFIX,emby.wtf,Emby
+  - DOMAIN-SUFFIX,emby.moe,Emby
 #  - RULE-SET,ProxyLite,OutSide
   - RULE-SET,StreamingSE,Maybe
 #  - RULE-SET,FakeFilter,China
@@ -630,6 +629,8 @@ rules:
   - RULE-SET,ChinaNoResolve,China
 #  - GEOSITE,geolocation-!cn,OutSide
   - RULE-SET,private,DIRECT
+  - RULE-SET,Porn,Streaming
+  - RULE-SET,Streamingip,Streaming,no-resolve
   - RULE-SET,Twitterip,Social,no-resolve
   - RULE-SET,Facebookip,Social,no-resolve
   - RULE-SET,privateip,DIRECT,no-resolve
