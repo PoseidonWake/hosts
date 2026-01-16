@@ -6,6 +6,12 @@ payload:
   - '+.dns.pub'
   - "connect.rom.miui.com"
     # OPPO
+  - +.coloros.com
+  - +.allawnos.com
+  - +.allawnofs.com
+  - +.allawntech.com
+  - +.oppomobile.com
+  - +.heytapdownload.com
   - '+.heytapmobi.com'
   - '+.heytapmobile.com'
   - '+.heytapdl.com'
