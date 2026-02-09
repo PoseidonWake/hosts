@@ -42,3 +42,5 @@ host-suffix, pool.ntp.org
 host, qtt-163cdn.com
 host-suffix, privacy-mgmt.com
 host-suffix, weather.com
+host-suffix, config.moe
+host-suffix, smallstrawberry.com
